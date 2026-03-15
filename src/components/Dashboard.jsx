@@ -1,15 +1,25 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../lib/db';
 import { useTranslation } from '../lib/useTranslation';
-import { ShieldCheck, CheckCircle2, BarChart3, ArrowRight } from 'lucide-react';
+import { ShieldCheck, CheckCircle2, BarChart3, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+
+const STATUS_ORDER = ['Implemented', 'In Progress', 'N/A', 'Not Implemented', 'Not Started'];
+const STATUS_COLORS = {
+  Implemented:      { bg: '#22c55e', light: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' },
+  'In Progress':    { bg: '#0085CA', light: 'bg-azure-100 text-azure-700 dark:bg-azure-900/40 dark:text-azure-400' },
+  'N/A':            { bg: '#f59e0b', light: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' },
+  'Not Implemented':{ bg: '#ef4444', light: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400' },
+  'Not Started':    { bg: '#d1d5db', light: 'bg-gray-100 text-gray-500 dark:bg-brand-700 dark:text-brand-300' },
+};
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const t = useTranslation();
   const norms = useLiveQuery(() => db.norms.toArray(), []);
   const controls = useLiveQuery(() => db.controls.toArray(), []);
+  const [expandedNorm, setExpandedNorm] = useState(null);
 
   const stats = useMemo(() => {
     if (!norms || !controls) return null;
@@ -20,7 +30,24 @@ export default function Dashboard() {
       const nc = controls.filter((c) => c.normId === norm.id);
       const ni = nc.filter((c) => c.status === 'Implemented').length;
       const pct = nc.length ? Math.round((ni / nc.length) * 100) : 0;
-      return { ...norm, total: nc.length, implemented: ni, pct };
+
+      const statsByStatus = {};
+      for (const s of STATUS_ORDER) {
+        statsByStatus[s] = nc.filter((c) => c.status === s).length;
+      }
+
+      const categoryMap = {};
+      for (const c of nc) {
+        const cat = c.category || '—';
+        if (!categoryMap[cat]) categoryMap[cat] = { total: 0, implemented: 0 };
+        categoryMap[cat].total++;
+        if (c.status === 'Implemented') categoryMap[cat].implemented++;
+      }
+      const statsByCategory = Object.entries(categoryMap)
+        .map(([cat, v]) => ({ cat, ...v, pct: Math.round((v.implemented / v.total) * 100) }))
+        .sort((a, b) => b.total - a.total);
+
+      return { ...norm, total: nc.length, implemented: ni, pct, statsByStatus, statsByCategory };
     });
     return { total, implemented, overallRate, normStats };
   }, [norms, controls]);
@@ -77,39 +104,137 @@ export default function Dashboard() {
             <div className="px-6 py-4 border-b border-brand-50 dark:border-brand-700">
               <h2 className="font-semibold text-brand-500 dark:text-white tracking-tight">{t.dashboard.progress}</h2>
             </div>
-            <div className="p-6 space-y-5">
-              {stats.normStats.map((norm) => (
-                <div key={norm.id}>
-                  <div className="flex items-center justify-between mb-2">
+
+            <div className="divide-y divide-brand-50 dark:divide-brand-700">
+              {stats.normStats.map((norm) => {
+                const isOpen = expandedNorm === norm.id;
+                return (
+                  <div key={norm.id}>
+                    {/* Row header — click to expand */}
                     <button
-                      onClick={() => navigate(`/norms/${norm.id}`)}
-                      className="text-sm font-semibold text-brand-500 dark:text-brand-100 hover:text-azure-500 transition-colors flex items-center gap-1.5 group"
+                      className="w-full text-left px-6 py-4 hover:bg-brand-50 dark:hover:bg-brand-700/30 transition-colors"
+                      onClick={() => setExpandedNorm(isOpen ? null : norm.id)}
+                      aria-expanded={isOpen}
                     >
-                      {norm.name}
-                      <ArrowRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className="text-sm font-semibold text-brand-500 dark:text-brand-100 flex items-center gap-2">
+                          {norm.name}
+                        </span>
+                        <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-brand-400">
+                          <span>{t.dashboard.progressOf(norm.implemented, norm.total)}</span>
+                          <span className="font-bold text-brand-500 dark:text-white w-9 text-right tabular-nums">
+                            {norm.pct}%
+                          </span>
+                          {isOpen
+                            ? <ChevronUp className="h-4 w-4 text-brand-300" />
+                            : <ChevronDown className="h-4 w-4 text-brand-300" />}
+                        </div>
+                      </div>
+                      {/* Simple progress bar (always visible) */}
+                      <div className="h-2 bg-brand-50 dark:bg-brand-700 rounded-full overflow-hidden">
+                        <div
+                          className="h-2 rounded-full transition-all duration-700"
+                          style={{
+                            width: `${norm.pct}%`,
+                            backgroundColor: norm.pct === 100 ? '#22c55e' : '#0085CA',
+                          }}
+                        />
+                      </div>
                     </button>
-                    <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-brand-400">
-                      <span>{t.dashboard.progressOf(norm.implemented, norm.total)}</span>
-                      <span className="font-bold text-brand-500 dark:text-white w-9 text-right tabular-nums">
-                        {norm.pct}%
-                      </span>
-                    </div>
+
+                    {/* Expanded drill-down */}
+                    {isOpen && (
+                      <div className="px-6 pb-6 pt-2 bg-brand-50/60 dark:bg-brand-900/30 border-t border-brand-100 dark:border-brand-700">
+
+                        {/* Stacked bar */}
+                        <div className="mb-4">
+                          <StackedBar statsByStatus={norm.statsByStatus} total={norm.total} />
+                        </div>
+
+                        {/* Status chips */}
+                        <div className="flex flex-wrap gap-2 mb-5">
+                          {STATUS_ORDER.map((s) => {
+                            const count = norm.statsByStatus[s];
+                            if (count === 0) return null;
+                            return (
+                              <span
+                                key={s}
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${STATUS_COLORS[s].light}`}
+                              >
+                                <span
+                                  className="w-2 h-2 rounded-full flex-shrink-0"
+                                  style={{ backgroundColor: STATUS_COLORS[s].bg }}
+                                />
+                                {t.controlList.statusLabels[s]} — {count}
+                              </span>
+                            );
+                          })}
+                        </div>
+
+                        {/* Category breakdown */}
+                        {norm.statsByCategory.length > 1 && (
+                          <div className="mb-5">
+                            <p className="text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest mb-2">
+                              {t.controlList.columns.category}
+                            </p>
+                            <div className="space-y-2">
+                              {norm.statsByCategory.map(({ cat, total, implemented, pct }) => (
+                                <div key={cat} className="flex items-center gap-3">
+                                  <span className="text-xs text-brand-400 dark:text-brand-300 w-36 truncate flex-shrink-0" title={cat}>{cat}</span>
+                                  <div className="flex-1 h-1.5 bg-brand-100 dark:bg-brand-700 rounded-full overflow-hidden">
+                                    <div
+                                      className="h-1.5 rounded-full"
+                                      style={{
+                                        width: `${pct}%`,
+                                        backgroundColor: pct === 100 ? '#22c55e' : '#0085CA',
+                                      }}
+                                    />
+                                  </div>
+                                  <span className="text-xs tabular-nums text-brand-400 dark:text-brand-400 w-20 text-right flex-shrink-0">
+                                    {implemented}/{total} ({pct}%)
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Navigate to framework */}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); navigate(`/norms/${norm.id}`); }}
+                          className="flex items-center gap-1.5 text-xs font-semibold text-azure-500 hover:text-azure-700 transition-colors"
+                        >
+                          {t.normList.open} <ArrowRight className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <div className="h-2 bg-brand-50 dark:bg-brand-700 rounded-full overflow-hidden">
-                    <div
-                      className="h-2 rounded-full transition-all duration-700"
-                      style={{
-                        width: `${norm.pct}%`,
-                        backgroundColor: norm.pct === 100 ? '#22c55e' : '#0085CA',
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </>
       )}
+    </div>
+  );
+}
+
+function StackedBar({ statsByStatus, total }) {
+  if (total === 0) return null;
+  return (
+    <div className="h-3 flex rounded-full overflow-hidden gap-px bg-brand-100 dark:bg-brand-700">
+      {STATUS_ORDER.map((s) => {
+        const count = statsByStatus[s];
+        if (count === 0) return null;
+        const pct = (count / total) * 100;
+        return (
+          <div
+            key={s}
+            style={{ width: `${pct}%`, backgroundColor: STATUS_COLORS[s].bg }}
+            title={`${s}: ${count}`}
+          />
+        );
+      })}
     </div>
   );
 }
