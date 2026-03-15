@@ -4,8 +4,9 @@ import { db } from '../lib/db';
 import { useTranslation } from '../lib/useTranslation';
 import {
   X, Save, Check, Clock, CheckCircle2, XCircle, MinusCircle, Circle,
-  FileText, FileSpreadsheet, File, Image, Download, Link2, Plus, Unlink,
+  Download, Link2, Plus, Unlink,
 } from 'lucide-react';
+import FileTypeIcon from '../lib/FileTypeIcon';
 
 const STATUSES = ['Not Started', 'In Progress', 'Implemented', 'Not Implemented', 'N/A'];
 
@@ -41,16 +42,6 @@ const STATUS_CONFIG = {
     active:   'border-amber-500 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-2 ring-amber-300 dark:ring-amber-800',
   },
 };
-
-function FileTypeIcon({ fileName, className }) {
-  const ext = (fileName || '').split('.').pop().toLowerCase();
-  const Icon =
-    ext === 'pdf' ? FileText :
-    ['xls', 'xlsx', 'csv'].includes(ext) ? FileSpreadsheet :
-    ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext) ? Image :
-    File;
-  return <Icon className={className} aria-hidden="true" />;
-}
 
 function DocumentPicker({ controlId, linkedIds, onClose }) {
   const t = useTranslation();

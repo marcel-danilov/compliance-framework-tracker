@@ -25,7 +25,7 @@ export const cs = {
 
   // Norm List
   normList: {
-    title: 'Compliace frameworky',
+    title: 'Compliance frameworky',
     subtitle: 'Importujte a sledujte compliance',
     importBtn: 'Importovat normu',
     empty: 'Zatím žádné normy',

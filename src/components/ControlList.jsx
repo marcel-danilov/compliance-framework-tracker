@@ -6,6 +6,7 @@ import { exportNormToCSV } from '../lib/csvUtils';
 import ControlDetail from './ControlDetail';
 import StatusBadge from './StatusBadge';
 import { useTranslation } from '../lib/useTranslation';
+import FileTypeIcon from '../lib/FileTypeIcon';
 import {
   ArrowLeft,
   Download,
@@ -14,21 +15,7 @@ import {
   ChevronUp,
   ChevronDown,
   ChevronsUpDown,
-  FileText,
-  FileSpreadsheet,
-  File,
-  Image,
 } from 'lucide-react';
-
-function FileTypeIcon({ fileName, className }) {
-  const ext = (fileName || '').split('.').pop().toLowerCase();
-  const Icon =
-    ext === 'pdf' ? FileText :
-    ['xls', 'xlsx', 'csv'].includes(ext) ? FileSpreadsheet :
-    ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext) ? Image :
-    File;
-  return <Icon className={className} aria-hidden="true" />;
-}
 
 const STATUSES = ['Not Started', 'In Progress', 'Implemented', 'Not Implemented', 'N/A'];
 

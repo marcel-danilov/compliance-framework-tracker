@@ -3,26 +3,16 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../lib/db';
 import { useTranslation } from '../lib/useTranslation';
 import {
-  Upload, Download, Trash2, FileText, FileSpreadsheet, File,
-  Image, Search, Plus, FolderOpen, History, X, Clock,
+  Upload, Download, Trash2, Search, Plus, FolderOpen, History, X, Clock,
 } from 'lucide-react';
 import ConfirmDialog from './ConfirmDialog';
+import FileTypeIcon from '../lib/FileTypeIcon';
 
 function formatSize(bytes) {
   if (!bytes) return '';
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} kB`;
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-}
-
-function FileIcon({ fileName, className }) {
-  const ext = (fileName || '').split('.').pop().toLowerCase();
-  const Icon =
-    ext === 'pdf' ? FileText :
-    ['xls', 'xlsx', 'csv'].includes(ext) ? FileSpreadsheet :
-    ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext) ? Image :
-    File;
-  return <Icon className={className} aria-hidden="true" />;
 }
 
 function UploadModal({ onClose }) {
@@ -129,7 +119,7 @@ function UploadModal({ onClose }) {
             >
               {file ? (
                 <div className="flex items-center justify-center gap-2.5">
-                  <FileIcon fileName={file.name} className="h-5 w-5 text-azure-500" />
+                  <FileTypeIcon fileName={file.name} className="h-5 w-5 text-azure-500" />
                   <div className="text-left">
                     <p className="text-sm font-medium text-brand-500 dark:text-white">{file.name}</p>
                     <p className="text-xs text-brand-300 dark:text-brand-400 mt-0.5">{formatSize(file.size)}</p>
@@ -250,7 +240,7 @@ function NewVersionModal({ doc, onClose }) {
             >
               {file ? (
                 <div className="flex items-center justify-center gap-2.5">
-                  <FileIcon fileName={file.name} className="h-5 w-5 text-azure-500" />
+                  <FileTypeIcon fileName={file.name} className="h-5 w-5 text-azure-500" />
                   <div className="text-left">
                     <p className="text-sm font-medium text-brand-500 dark:text-white">{file.name}</p>
                     <p className="text-xs text-brand-300 dark:text-brand-400 mt-0.5">{formatSize(file.size)}</p>
@@ -541,7 +531,7 @@ export default function DocumentRegister() {
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-brand-100/60 dark:bg-brand-700/60 flex items-center justify-center flex-shrink-0">
-                          <FileIcon fileName={doc.fileName} className="h-4 w-4 text-brand-400" />
+                          <FileTypeIcon fileName={doc.fileName} className="h-4 w-4 text-brand-400" />
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">

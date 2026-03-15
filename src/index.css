@@ -27,7 +27,7 @@ body {
     radial-gradient(ellipse at 60% 85%, rgba(201,99,56,0.07) 0%, transparent 55%);
 }
 
-.dark body {
+html.dark body {
   background-color: #1e1610;
   background-image:
     radial-gradient(ellipse at 15% 25%, rgba(201,99,56,0.08) 0%, transparent 55%),
