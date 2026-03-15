@@ -78,14 +78,11 @@ function UploadModal({ onClose }) {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50 p-4"
-      style={{ backgroundColor: 'rgba(0,31,42,0.35)', backdropFilter: 'blur(4px)' }}
+      style={{ backgroundColor: 'rgba(30,22,16,0.40)', backdropFilter: 'blur(6px)' }}
     >
-      <div
-        className="bg-white dark:bg-brand-800 rounded-2xl w-full max-w-lg p-6 border border-brand-100 dark:border-brand-700"
-        style={{ boxShadow: '0 20px 60px 0 rgba(0,31,42,0.22)' }}
-      >
-        <h2 className="font-semibold text-brand-500 dark:text-white mb-1 tracking-tight">{t.uploadModal.title}</h2>
-        <p className="text-sm text-brand-300 dark:text-brand-400 mb-5">{t.uploadModal.subtitle}</p>
+      <div className="glass-modal rounded-2xl w-full max-w-lg p-6 shadow-modal">
+        <h2 className="font-semibold text-brand-800 dark:text-brand-100 mb-1 tracking-tight">{t.uploadModal.title}</h2>
+        <p className="text-sm text-brand-400 dark:text-brand-400 mb-5">{t.uploadModal.subtitle}</p>
 
         <div className="space-y-4">
           <div>
@@ -97,7 +94,7 @@ function UploadModal({ onClose }) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Název dokumentu"
-              className="w-full border border-brand-100 dark:border-brand-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-gray-700 dark:text-brand-100 dark:bg-brand-700 placeholder-brand-200 dark:placeholder-brand-500 transition-all"
+              className="w-full border border-brand-200/60 dark:border-brand-600/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-brand-700 dark:text-brand-100 bg-white/60 dark:bg-brand-700/50 backdrop-blur-sm placeholder-brand-300 dark:placeholder-brand-500 transition-all"
             />
           </div>
 
@@ -111,7 +108,7 @@ function UploadModal({ onClose }) {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Stručný popis dokumentu"
-              className="w-full border border-brand-100 dark:border-brand-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-gray-700 dark:text-brand-100 dark:bg-brand-700 placeholder-brand-200 dark:placeholder-brand-500 transition-all"
+              className="w-full border border-brand-200/60 dark:border-brand-600/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-brand-700 dark:text-brand-100 bg-white/60 dark:bg-brand-700/50 backdrop-blur-sm placeholder-brand-300 dark:placeholder-brand-500 transition-all"
             />
           </div>
 
@@ -126,8 +123,8 @@ function UploadModal({ onClose }) {
               onClick={() => fileRef.current.click()}
               className={`border-2 border-dashed rounded-xl px-4 py-7 text-center cursor-pointer transition-colors ${
                 dragging
-                  ? 'border-azure-400 bg-azure-50 dark:bg-azure-900/20'
-                  : 'border-brand-100 dark:border-brand-600 hover:border-azure-300 hover:bg-brand-50 dark:hover:bg-brand-700'
+                  ? 'border-azure-400 bg-azure-50/60 dark:bg-azure-900/20'
+                  : 'border-brand-200/50 dark:border-brand-600/50 hover:border-azure-300 hover:bg-brand-50/50 dark:hover:bg-brand-700/40'
               }`}
             >
               {file ? (
@@ -158,7 +155,7 @@ function UploadModal({ onClose }) {
         <div className="flex justify-end gap-2.5 mt-6">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm text-gray-400 dark:text-brand-400 hover:text-brand-500 dark:hover:text-white font-medium transition-colors"
+            className="px-4 py-2 text-sm text-brand-400 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-100 font-medium transition-colors"
           >
             {t.common.cancel}
           </button>
@@ -225,16 +222,13 @@ function NewVersionModal({ doc, onClose }) {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50 p-4"
-      style={{ backgroundColor: 'rgba(0,31,42,0.35)', backdropFilter: 'blur(4px)' }}
+      style={{ backgroundColor: 'rgba(30,22,16,0.40)', backdropFilter: 'blur(6px)' }}
     >
-      <div
-        className="bg-white dark:bg-brand-800 rounded-2xl w-full max-w-md p-6 border border-brand-100 dark:border-brand-700"
-        style={{ boxShadow: '0 20px 60px 0 rgba(0,31,42,0.22)' }}
-      >
+      <div className="glass-modal rounded-2xl w-full max-w-md p-6 shadow-modal">
         <div className="flex items-start justify-between mb-4">
           <div>
-            <h2 className="font-semibold text-brand-500 dark:text-white tracking-tight">{t.docVersions.uploadNew}</h2>
-            <p className="text-xs text-brand-300 dark:text-brand-400 mt-0.5 truncate max-w-xs">{doc.name}</p>
+            <h2 className="font-semibold text-brand-800 dark:text-brand-100 tracking-tight">{t.docVersions.uploadNew}</h2>
+            <p className="text-xs text-brand-400 dark:text-brand-400 mt-0.5 truncate max-w-xs">{doc.name}</p>
           </div>
           <span className="text-xs font-semibold px-2 py-0.5 bg-azure-50 dark:bg-azure-900/30 text-azure-600 dark:text-azure-300 rounded-full border border-azure-100 dark:border-azure-800">
             {t.docVersions.version((doc.currentVersion || 1) + 1)}
@@ -250,8 +244,8 @@ function NewVersionModal({ doc, onClose }) {
               onClick={() => fileRef.current.click()}
               className={`border-2 border-dashed rounded-xl px-4 py-6 text-center cursor-pointer transition-colors ${
                 dragging
-                  ? 'border-azure-400 bg-azure-50 dark:bg-azure-900/20'
-                  : 'border-brand-100 dark:border-brand-600 hover:border-azure-300 hover:bg-brand-50 dark:hover:bg-brand-700'
+                  ? 'border-azure-400 bg-azure-50/60 dark:bg-azure-900/20'
+                  : 'border-brand-200/50 dark:border-brand-600/50 hover:border-azure-300 hover:bg-brand-50/50 dark:hover:bg-brand-700/40'
               }`}
             >
               {file ? (
@@ -287,7 +281,7 @@ function NewVersionModal({ doc, onClose }) {
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder={t.docVersions.commentPlaceholder}
-              className="w-full border border-brand-100 dark:border-brand-600 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-gray-700 dark:text-brand-100 dark:bg-brand-700 placeholder-brand-200 dark:placeholder-brand-500 transition-all"
+              className="w-full border border-brand-200/60 dark:border-brand-600/60 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-brand-700 dark:text-brand-100 bg-white/60 dark:bg-brand-700/50 backdrop-blur-sm placeholder-brand-300 dark:placeholder-brand-500 transition-all"
             />
           </div>
         </div>
@@ -295,7 +289,7 @@ function NewVersionModal({ doc, onClose }) {
         <div className="flex justify-end gap-2.5 mt-6">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm text-gray-400 dark:text-brand-400 hover:text-brand-500 dark:hover:text-white font-medium transition-colors"
+            className="px-4 py-2 text-sm text-brand-400 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-100 font-medium transition-colors"
           >
             {t.common.cancel}
           </button>
@@ -331,24 +325,21 @@ function VersionHistoryModal({ doc, onClose }) {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50 p-4"
-      style={{ backgroundColor: 'rgba(0,31,42,0.35)', backdropFilter: 'blur(4px)' }}
+      style={{ backgroundColor: 'rgba(30,22,16,0.40)', backdropFilter: 'blur(6px)' }}
     >
-      <div
-        className="bg-white dark:bg-brand-800 rounded-2xl w-full max-w-lg border border-brand-100 dark:border-brand-700 flex flex-col max-h-[80vh]"
-        style={{ boxShadow: '0 20px 60px 0 rgba(0,31,42,0.22)' }}
-      >
+      <div className="glass-modal rounded-2xl w-full max-w-lg flex flex-col max-h-[80vh] shadow-modal">
         {/* Header */}
-        <div className="flex items-start justify-between px-6 py-4 border-b border-brand-100 dark:border-brand-700">
+        <div className="flex items-start justify-between px-6 py-4 border-b border-brand-200/40 dark:border-brand-700/40">
           <div>
-            <h2 className="font-semibold text-brand-500 dark:text-white tracking-tight flex items-center gap-2">
-              <History className="h-4 w-4 text-brand-300 dark:text-brand-400" aria-hidden="true" />
+            <h2 className="font-semibold text-brand-800 dark:text-brand-100 tracking-tight flex items-center gap-2">
+              <History className="h-4 w-4 text-brand-400" aria-hidden="true" />
               {t.docVersions.history}
             </h2>
-            <p className="text-xs text-brand-300 dark:text-brand-400 mt-0.5 truncate max-w-xs">{doc.name}</p>
+            <p className="text-xs text-brand-400 dark:text-brand-400 mt-0.5 truncate max-w-xs">{doc.name}</p>
           </div>
           <button
             onClick={onClose}
-            className="text-brand-300 hover:text-brand-500 dark:hover:text-white transition-colors p-1 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-700"
+            className="text-brand-400 hover:text-brand-700 dark:hover:text-brand-100 transition-colors p-1 rounded-lg hover:bg-brand-100/50 dark:hover:bg-brand-700/50"
           >
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
@@ -367,15 +358,15 @@ function VersionHistoryModal({ doc, onClose }) {
                     key={v.id}
                     className={`flex items-start gap-3 p-3.5 rounded-xl border transition-colors ${
                       isCurrent
-                        ? 'border-azure-200 dark:border-azure-800 bg-azure-50/50 dark:bg-azure-900/10'
-                        : 'border-brand-100 dark:border-brand-700 hover:bg-brand-50/50 dark:hover:bg-brand-700/50'
+                        ? 'border-azure-200 dark:border-azure-800 bg-azure-50/50 dark:bg-azure-900/15'
+                        : 'border-brand-200/40 dark:border-brand-700/40 hover:bg-brand-50/40 dark:hover:bg-brand-700/30'
                     }`}
                   >
                     {/* Version badge */}
                     <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold ${
                       isCurrent
                         ? 'bg-azure-500 text-white'
-                        : 'bg-brand-50 dark:bg-brand-700 text-brand-400 dark:text-brand-300'
+                        : 'bg-brand-100/60 dark:bg-brand-700/60 text-brand-400 dark:text-brand-300'
                     }`}>
                       {t.docVersions.version(v.versionNumber)}
                     </div>
@@ -413,7 +404,7 @@ function VersionHistoryModal({ doc, onClose }) {
           )}
         </div>
 
-        <div className="px-6 py-4 border-t border-brand-100 dark:border-brand-700 flex justify-end">
+        <div className="px-6 py-4 border-t border-brand-200/40 dark:border-brand-700/40 flex justify-end">
           <button
             onClick={onClose}
             className="px-4 py-2 text-sm font-medium text-brand-500 dark:text-brand-200 hover:text-brand-700 dark:hover:text-white transition-colors"
@@ -477,8 +468,8 @@ export default function DocumentRegister() {
       {/* Header */}
       <div className="flex items-start justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-brand-500 dark:text-white tracking-tight mb-1">{t.documentRegister.title}</h1>
-          <p className="text-sm text-brand-300 dark:text-brand-400">{t.documentRegister.subtitle}</p>
+          <h1 className="text-2xl font-bold text-brand-800 dark:text-brand-100 tracking-tight mb-1">{t.documentRegister.title}</h1>
+          <p className="text-sm text-brand-400 dark:text-brand-400">{t.documentRegister.subtitle}</p>
         </div>
         <button
           onClick={() => setShowUpload(true)}
@@ -501,7 +492,7 @@ export default function DocumentRegister() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t.documentRegister.searchPlaceholder}
-          className="w-full pl-9 pr-3 py-2 border border-brand-100 dark:border-brand-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 bg-white dark:bg-brand-800 text-gray-700 dark:text-brand-100 placeholder-brand-200 dark:placeholder-brand-500"
+          className="w-full pl-9 pr-3 py-2 border border-brand-200/60 dark:border-brand-700/50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 bg-white/60 dark:bg-brand-800/50 backdrop-blur-sm text-brand-700 dark:text-brand-100 placeholder-brand-300 dark:placeholder-brand-500"
         />
       </div>
 
@@ -522,57 +513,54 @@ export default function DocumentRegister() {
           )}
         </div>
       ) : (
-        <div
-          className="bg-white dark:bg-brand-800 rounded-2xl border border-brand-100 dark:border-brand-700 overflow-hidden"
-          style={{ boxShadow: '0 1px 3px 0 rgba(0,96,122,0.06), 0 1px 2px -1px rgba(0,96,122,0.04)' }}
-        >
+        <div className="glass-card shadow-glass rounded-2xl overflow-hidden">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-brand-50 dark:border-brand-700">
-                <th className="text-left text-xs font-semibold text-brand-300 dark:text-brand-400 uppercase tracking-widest px-5 py-3.5">
+              <tr className="border-b border-brand-200/40 dark:border-brand-700/40 bg-brand-50/40 dark:bg-brand-900/30">
+                <th className="text-left text-xs font-semibold text-brand-400 uppercase tracking-widest px-5 py-3.5">
                   {t.documentRegister.columns.name}
                 </th>
-                <th className="text-left text-xs font-semibold text-brand-300 dark:text-brand-400 uppercase tracking-widest px-4 py-3.5 hidden sm:table-cell">
+                <th className="text-left text-xs font-semibold text-brand-400 uppercase tracking-widest px-4 py-3.5 hidden sm:table-cell">
                   {t.documentRegister.columns.file}
                 </th>
-                <th className="text-left text-xs font-semibold text-brand-300 dark:text-brand-400 uppercase tracking-widest px-4 py-3.5 hidden md:table-cell">
+                <th className="text-left text-xs font-semibold text-brand-400 uppercase tracking-widest px-4 py-3.5 hidden md:table-cell">
                   {t.documentRegister.columns.added}
                 </th>
-                <th className="text-left text-xs font-semibold text-brand-300 dark:text-brand-400 uppercase tracking-widest px-4 py-3.5 hidden lg:table-cell">
+                <th className="text-left text-xs font-semibold text-brand-400 uppercase tracking-widest px-4 py-3.5 hidden lg:table-cell">
                   {t.documentRegister.columns.usage}
                 </th>
                 <th className="px-4 py-3.5" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-brand-50 dark:divide-brand-700">
+            <tbody className="divide-y divide-brand-100/50 dark:divide-brand-700/40">
               {filtered.map((doc) => {
                 const count = (linkCounts || {})[doc.id] || 0;
                 const version = doc.currentVersion || 1;
                 return (
-                  <tr key={doc.id} className="hover:bg-brand-50/40 dark:hover:bg-brand-700/50 transition-colors group">
+                  <tr key={doc.id} className="hover:bg-brand-50/40 dark:hover:bg-brand-700/30 transition-colors group">
                     <td className="px-5 py-3.5">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-700 flex items-center justify-center flex-shrink-0">
+                        <div className="w-8 h-8 rounded-lg bg-brand-100/60 dark:bg-brand-700/60 flex items-center justify-center flex-shrink-0">
                           <FileIcon fileName={doc.fileName} className="h-4 w-4 text-brand-400" />
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <p className="text-sm font-medium text-brand-500 dark:text-brand-100 truncate">{doc.name}</p>
+                            <p className="text-sm font-medium text-brand-700 dark:text-brand-100 truncate">{doc.name}</p>
                             {version > 1 && (
-                              <span className="text-xs px-1.5 py-0.5 bg-brand-50 dark:bg-brand-700 text-brand-400 dark:text-brand-300 rounded-full border border-brand-100 dark:border-brand-600 font-medium flex-shrink-0 tabular-nums">
+                              <span className="text-xs px-1.5 py-0.5 bg-brand-100/60 dark:bg-brand-700/60 text-brand-500 dark:text-brand-300 rounded-full border border-brand-200/50 dark:border-brand-600/50 font-medium flex-shrink-0 tabular-nums">
                                 {t.docVersions.version(version)}
                               </span>
                             )}
                           </div>
                           {doc.description && (
-                            <p className="text-xs text-brand-300 dark:text-brand-400 truncate mt-0.5">{doc.description}</p>
+                            <p className="text-xs text-brand-400 dark:text-brand-400 truncate mt-0.5">{doc.description}</p>
                           )}
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-3.5 hidden sm:table-cell">
-                      <p className="text-xs text-gray-500 dark:text-brand-300 truncate max-w-[180px]">{doc.fileName}</p>
-                      <p className="text-xs text-brand-200 dark:text-brand-500 mt-0.5">{formatSize(doc.fileSize)}</p>
+                      <p className="text-xs text-brand-500 dark:text-brand-300 truncate max-w-[180px]">{doc.fileName}</p>
+                      <p className="text-xs text-brand-300 dark:text-brand-500 mt-0.5">{formatSize(doc.fileSize)}</p>
                     </td>
                     <td className="px-4 py-3.5 hidden md:table-cell">
                       <p className="text-xs text-brand-300 dark:text-brand-400">

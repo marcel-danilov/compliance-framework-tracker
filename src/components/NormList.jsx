@@ -49,7 +49,7 @@ export default function NormList() {
   if (!norms) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-brand-300 text-sm">{t.common.loading}</p>
+        <p className="text-brand-400 text-sm">{t.common.loading}</p>
       </div>
     );
   }
@@ -58,10 +58,10 @@ export default function NormList() {
     <div className="p-8 max-w-6xl mx-auto">
       <div className="flex items-start justify-between mb-10">
         <div>
-          <h1 className="text-2xl font-bold text-brand-500 dark:text-white tracking-tight">
+          <h1 className="text-2xl font-bold text-brand-800 dark:text-brand-100 tracking-tight">
             {t.normList.title}
           </h1>
-          <p className="text-sm text-brand-400 dark:text-brand-300 mt-1 font-normal">
+          <p className="text-sm text-brand-500 dark:text-brand-300 mt-1 font-normal">
             {t.normList.subtitle}
           </p>
         </div>
@@ -75,12 +75,12 @@ export default function NormList() {
       </div>
 
       {norms.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-28 border border-dashed border-brand-200 dark:border-brand-700 rounded-2xl text-center bg-white dark:bg-brand-800">
-          <div className="w-16 h-16 rounded-2xl bg-brand-50 dark:bg-brand-700 flex items-center justify-center mb-5">
-            <ShieldCheck className="h-8 w-8 text-brand-300" aria-hidden="true" />
+        <div className="flex flex-col items-center justify-center py-28 border border-dashed border-brand-200/70 dark:border-brand-700/50 rounded-2xl text-center glass-card shadow-glass">
+          <div className="w-16 h-16 rounded-2xl bg-brand-100/80 dark:bg-brand-700/50 flex items-center justify-center mb-5">
+            <ShieldCheck className="h-8 w-8 text-brand-400" aria-hidden="true" />
           </div>
-          <h3 className="text-base font-semibold text-brand-500 dark:text-white mb-1.5">{t.normList.empty}</h3>
-          <p className="text-sm text-brand-300 dark:text-brand-400 mb-7 max-w-xs leading-relaxed">
+          <h3 className="text-base font-semibold text-brand-700 dark:text-brand-100 mb-1.5">{t.normList.empty}</h3>
+          <p className="text-sm text-brand-400 dark:text-brand-400 mb-7 max-w-xs leading-relaxed">
             {t.normList.emptyHelp}
           </p>
           <button
@@ -101,66 +101,66 @@ export default function NormList() {
             return (
               <div
                 key={norm.id}
-                className="bg-white dark:bg-brand-800 border border-brand-100 dark:border-brand-700 rounded-xl shadow-card hover:shadow-card-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col overflow-hidden"
+                className="glass-card shadow-glass hover:shadow-card-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col overflow-hidden rounded-xl"
               >
                 <div
                   className="h-1 w-full"
                   style={{
-                    backgroundColor: pct === 100 ? '#22c55e' : pct > 0 ? '#0085CA' : '#a1dded',
+                    backgroundColor: pct === 100 ? '#22c55e' : pct > 0 ? '#c96338' : '#c4ae93',
                   }}
                 />
 
                 <div className="p-5 flex-1">
-                  <h3 className="font-semibold text-brand-500 dark:text-white mb-0.5 tracking-tight">{norm.name}</h3>
+                  <h3 className="font-semibold text-brand-800 dark:text-brand-100 mb-0.5 tracking-tight">{norm.name}</h3>
                   {norm.description && (
-                    <p className="text-sm text-gray-400 dark:text-brand-400 line-clamp-2 mb-4 leading-relaxed">{norm.description}</p>
+                    <p className="text-sm text-brand-400 dark:text-brand-400 line-clamp-2 mb-4 leading-relaxed">{norm.description}</p>
                   )}
                   {!norm.description && <div className="mb-4" />}
 
                   <div className="flex items-center justify-between text-sm mb-2">
-                    <span className="text-gray-400 dark:text-brand-400 font-normal">{s.total ?? 0} {s.total === 1 ? 'opatření' : 'opatření'}</span>
-                    <span className="font-semibold text-brand-500 dark:text-white">{pct}% implementováno</span>
+                    <span className="text-brand-400 dark:text-brand-400 font-normal">{s.total ?? 0} opatření</span>
+                    <span className="font-semibold text-brand-700 dark:text-brand-200">{pct}% implementováno</span>
                   </div>
 
                   <StackedBar stats={s} />
 
                   <div className="flex flex-wrap gap-1.5 mb-4">
                     {s.notStarted > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-brand-700 text-gray-500 dark:text-brand-300 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-brand-100/80 dark:bg-brand-700/60 text-brand-500 dark:text-brand-300 rounded-full font-medium">
                         {s.notStarted} {t.controlList.statusLabels['Not Started']}
                       </span>
                     )}
                     {s.inProgress > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-azure-50 dark:bg-azure-900/30 text-azure-700 dark:text-azure-300 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-azure-100/70 dark:bg-azure-900/30 text-azure-700 dark:text-azure-300 rounded-full font-medium">
                         {s.inProgress} {t.controlList.statusLabels['In Progress']}
                       </span>
                     )}
                     {s.implemented > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-green-50/80 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-full font-medium">
                         {s.implemented} {t.controlList.statusLabels['Implemented']}
                       </span>
                     )}
                     {s.notImplemented > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-red-50/80 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full font-medium">
                         {s.notImplemented} {t.controlList.statusLabels['Not Implemented']}
                       </span>
                     )}
                     {s.na > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-amber-50/80 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-full font-medium">
                         {s.na} {t.controlList.statusLabels['N/A']}
                       </span>
                     )}
                   </div>
 
-                  <p className="text-xs text-gray-300 dark:text-brand-500 font-normal">
+                  <p className="text-xs text-brand-300 dark:text-brand-500 font-normal">
                     {t.normList.updated} {new Date(norm.updatedAt).toLocaleDateString('cs-CZ')}
                   </p>
                 </div>
 
-                <div className="px-5 pb-4 pt-3 flex gap-2 border-t border-brand-50 dark:border-brand-700">
+                <div className="px-5 pb-4 pt-3 flex gap-2 border-t border-brand-200/40 dark:border-brand-700/40">
                   <button
                     onClick={() => navigate(`/norms/${norm.id}`)}
-                    className="flex-1 flex items-center justify-center gap-1.5 bg-brand-500 dark:bg-brand-700 dark:hover:bg-brand-600 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-brand-600 active:scale-95 transition-all duration-150"
+                    className="flex-1 flex items-center justify-center gap-1.5 bg-brand-700 dark:bg-brand-700/80 text-white px-3 py-2 rounded-lg text-sm font-semibold hover:bg-brand-800 dark:hover:bg-brand-600 active:scale-95 transition-all duration-150"
                   >
                     {t.normList.open} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                   </button>
@@ -168,7 +168,7 @@ export default function NormList() {
                     onClick={() => handleExport(norm)}
                     title={t.normList.exportBtn}
                     aria-label={t.normList.exportBtn}
-                    className="p-2 text-brand-300 hover:text-brand-500 dark:hover:text-white hover:bg-brand-50 dark:hover:bg-brand-700 rounded-lg transition-all duration-150"
+                    className="p-2 text-brand-400 hover:text-brand-700 dark:hover:text-brand-100 hover:bg-brand-100/60 dark:hover:bg-brand-700/50 rounded-lg transition-all duration-150"
                   >
                     <Download className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -176,7 +176,7 @@ export default function NormList() {
                     onClick={() => setDeleteTarget(norm)}
                     title={t.normList.deleteNorm}
                     aria-label={t.normList.deleteNorm}
-                    className="p-2 text-red-300 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-150"
+                    className="p-2 text-red-300 hover:text-red-600 hover:bg-red-50/70 dark:hover:bg-red-900/20 rounded-lg transition-all duration-150"
                   >
                     <Trash2 className="h-4 w-4" aria-hidden="true" />
                   </button>
@@ -204,21 +204,21 @@ export default function NormList() {
 
 const SEGMENTS = [
   { key: 'implemented',    color: '#22c55e' },
-  { key: 'inProgress',     color: '#0085CA' },
+  { key: 'inProgress',     color: '#c96338' },
   { key: 'na',             color: '#f59e0b' },
   { key: 'notImplemented', color: '#ef4444' },
-  { key: 'notStarted',     color: '#d1d5db' },
+  { key: 'notStarted',     color: '#c4ae93' },
 ];
 
 function StackedBar({ stats }) {
   const t = useTranslation();
   const total = stats.total || 0;
   if (total === 0) {
-    return <div className="h-2 bg-brand-50 dark:bg-brand-700 rounded-full mb-5" aria-hidden="true" />;
+    return <div className="h-2 bg-brand-100/60 dark:bg-brand-700/50 rounded-full mb-5" aria-hidden="true" />;
   }
   return (
     <div
-      className="flex h-2 rounded-full overflow-hidden mb-5 bg-brand-50 dark:bg-brand-700"
+      className="flex h-2 rounded-full overflow-hidden mb-5 bg-brand-100/60 dark:bg-brand-700/50"
       role="img"
       aria-label={t.stackedBar.ariaLabel(stats)}
     >

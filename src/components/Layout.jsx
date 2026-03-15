@@ -17,20 +17,20 @@ export default function Layout({ children }) {
   ];
 
   return (
-    <div className="flex h-screen bg-brand-50 dark:bg-brand-900 overflow-hidden">
+    <div className="flex h-screen overflow-hidden">
       <aside
         className={`${
           open ? 'w-56' : 'w-14'
-        } bg-brand-500 dark:bg-brand-900 flex-shrink-0 flex flex-col transition-all duration-200 overflow-hidden border-r border-transparent dark:border-brand-800`}
+        } glass-sidebar flex-shrink-0 flex flex-col transition-all duration-200 overflow-hidden`}
       >
         {/* Logo */}
-        <div className={`flex items-center border-b border-brand-600/60 dark:border-brand-800 ${open ? 'px-4 py-4 justify-between' : 'px-0 py-4 justify-center'}`}>
+        <div className={`flex items-center border-b border-brand-700/40 ${open ? 'px-4 py-4 justify-between' : 'px-0 py-4 justify-center'}`}>
           {open && (
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-7 h-7 rounded-lg bg-azure-500 flex items-center justify-center flex-shrink-0">
                 <ShieldCheck className="h-4 w-4 text-white" aria-hidden="true" />
               </div>
-              <span className="text-sm font-semibold text-white tracking-tight truncate block">
+              <span className="text-sm font-semibold text-brand-100 tracking-tight truncate block">
                 Compliance Mgr
               </span>
             </div>
@@ -43,7 +43,7 @@ export default function Layout({ children }) {
           {open && (
             <button
               onClick={() => setOpen(false)}
-              className="text-brand-200 hover:text-white transition-colors flex-shrink-0"
+              className="text-brand-400 hover:text-brand-100 transition-colors flex-shrink-0"
               aria-label={t.nav.collapseAriaLabel}
             >
               <X className="h-4 w-4" />
@@ -63,8 +63,8 @@ export default function Layout({ children }) {
                 aria-current={active ? 'page' : undefined}
                 className={`flex items-center gap-3 px-2.5 py-2 rounded-lg text-sm font-medium transition-all duration-150 relative ${
                   active
-                    ? 'bg-white/10 text-white'
-                    : 'text-brand-200 hover:bg-white/8 hover:text-white'
+                    ? 'bg-white/12 text-white'
+                    : 'text-brand-300 hover:bg-white/8 hover:text-brand-100'
                 }`}
               >
                 {active && (
@@ -78,17 +78,17 @@ export default function Layout({ children }) {
         </nav>
 
         {!open && (
-          <div className="p-2 border-t border-brand-600/60 dark:border-brand-800">
+          <div className="p-2 border-t border-brand-700/40">
             <button
               onClick={toggle}
-              className="w-full flex justify-center py-2 text-brand-200 hover:text-white transition-colors rounded-lg hover:bg-white/8 mb-0.5"
+              className="w-full flex justify-center py-2 text-brand-400 hover:text-brand-100 transition-colors rounded-lg hover:bg-white/8 mb-0.5"
               aria-label={dark ? 'Světlý režim' : 'Tmavý režim'}
             >
               {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <button
               onClick={() => setOpen(true)}
-              className="w-full flex justify-center py-2 text-brand-200 hover:text-white transition-colors rounded-lg hover:bg-white/8"
+              className="w-full flex justify-center py-2 text-brand-400 hover:text-brand-100 transition-colors rounded-lg hover:bg-white/8"
               aria-label={t.nav.expandAriaLabel}
             >
               <Menu className="h-4 w-4" />
@@ -97,11 +97,11 @@ export default function Layout({ children }) {
         )}
 
         {open && (
-          <div className="px-4 py-3 border-t border-brand-600/60 dark:border-brand-800 flex items-center justify-between">
-            <p className="text-xs text-brand-300/70 font-medium tracking-wide">v1.0</p>
+          <div className="px-4 py-3 border-t border-brand-700/40 flex items-center justify-between">
+            <p className="text-xs text-brand-500 font-medium tracking-wide">v1.0</p>
             <button
               onClick={toggle}
-              className="text-brand-300 hover:text-white transition-colors"
+              className="text-brand-400 hover:text-brand-100 transition-colors"
               aria-label={dark ? 'Světlý režim' : 'Tmavý režim'}
             >
               {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}

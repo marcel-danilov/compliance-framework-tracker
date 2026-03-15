@@ -15,18 +15,15 @@ export default function ConfirmDialog({
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50 p-4"
-      style={{ backgroundColor: 'rgba(0,31,42,0.50)', backdropFilter: 'blur(4px)' }}
+      style={{ backgroundColor: 'rgba(30,22,16,0.45)', backdropFilter: 'blur(6px)' }}
     >
-      <div
-        className="bg-white dark:bg-brand-800 rounded-2xl w-full max-w-md p-6 border border-brand-100 dark:border-brand-700"
-        style={{ boxShadow: '0 20px 60px 0 rgba(0,31,42,0.22)' }}
-      >
-        <h3 className="font-semibold text-brand-500 dark:text-white mb-1.5 tracking-tight">{title}</h3>
-        <p className="text-sm text-gray-400 dark:text-brand-400 mb-6 leading-relaxed">{message}</p>
+      <div className="glass-modal rounded-2xl w-full max-w-md p-6 shadow-modal">
+        <h3 className="font-semibold text-brand-800 dark:text-brand-100 mb-1.5 tracking-tight">{title}</h3>
+        <p className="text-sm text-brand-400 dark:text-brand-400 mb-6 leading-relaxed">{message}</p>
         <div className="flex justify-end gap-2.5">
           <button
             onClick={onCancel}
-            className="px-4 py-2 text-sm text-gray-400 dark:text-brand-400 hover:text-brand-500 dark:hover:text-white font-medium transition-colors"
+            className="px-4 py-2 text-sm text-brand-400 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-100 font-medium transition-colors"
           >
             {t.confirmDialog.cancelBtn}
           </button>

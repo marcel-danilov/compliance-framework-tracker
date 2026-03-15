@@ -7,11 +7,11 @@ import { ShieldCheck, CheckCircle2, BarChart3, ArrowRight, ChevronDown, ChevronU
 
 const STATUS_ORDER = ['Implemented', 'In Progress', 'N/A', 'Not Implemented', 'Not Started'];
 const STATUS_COLORS = {
-  Implemented:      { bg: '#22c55e', light: 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-400' },
-  'In Progress':    { bg: '#0085CA', light: 'bg-azure-100 text-azure-700 dark:bg-azure-900/40 dark:text-azure-400' },
-  'N/A':            { bg: '#f59e0b', light: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' },
-  'Not Implemented':{ bg: '#ef4444', light: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400' },
-  'Not Started':    { bg: '#d1d5db', light: 'bg-gray-100 text-gray-500 dark:bg-brand-700 dark:text-brand-300' },
+  Implemented:      { bg: '#22c55e', light: 'bg-green-100/80 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
+  'In Progress':    { bg: '#c96338', light: 'bg-azure-100/80 text-azure-700 dark:bg-azure-900/30 dark:text-azure-300' },
+  'N/A':            { bg: '#f59e0b', light: 'bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' },
+  'Not Implemented':{ bg: '#ef4444', light: 'bg-red-100/80 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
+  'Not Started':    { bg: '#c4ae93', light: 'bg-brand-100/70 text-brand-500 dark:bg-brand-700/50 dark:text-brand-300' },
 };
 
 export default function Dashboard() {
@@ -54,7 +54,7 @@ export default function Dashboard() {
 
   if (!stats) return (
     <div className="flex items-center justify-center h-full">
-      <p className="text-brand-300 text-sm">{t.common.loading}</p>
+      <p className="text-brand-400 text-sm">{t.common.loading}</p>
     </div>
   );
 
@@ -63,19 +63,19 @@ export default function Dashboard() {
   return (
     <div className="p-8 max-w-5xl mx-auto">
       <div className="mb-10">
-        <h1 className="text-2xl font-bold text-brand-500 dark:text-white tracking-tight">{t.dashboard.title}</h1>
-        <p className="text-sm text-brand-400 dark:text-brand-300 mt-1 font-normal">{t.dashboard.subtitle}</p>
+        <h1 className="text-2xl font-bold text-brand-800 dark:text-brand-100 tracking-tight">{t.dashboard.title}</h1>
+        <p className="text-sm text-brand-500 dark:text-brand-300 mt-1 font-normal">{t.dashboard.subtitle}</p>
       </div>
 
       {empty && (
-        <div className="flex flex-col items-center justify-center py-24 border border-dashed border-brand-200 dark:border-brand-700 rounded-2xl bg-white dark:bg-brand-800 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-brand-50 dark:bg-brand-700 flex items-center justify-center mb-5">
-            <BarChart3 className="h-8 w-8 text-brand-300" aria-hidden="true" />
+        <div className="flex flex-col items-center justify-center py-24 border border-dashed border-brand-200/70 dark:border-brand-700/50 rounded-2xl text-center glass-card shadow-glass">
+          <div className="w-16 h-16 rounded-2xl bg-brand-100/70 dark:bg-brand-700/50 flex items-center justify-center mb-5">
+            <BarChart3 className="h-8 w-8 text-brand-400" aria-hidden="true" />
           </div>
-          <p className="text-brand-400 dark:text-brand-300 font-medium mb-1">{t.dashboard.empty}</p>
+          <p className="text-brand-500 dark:text-brand-300 font-medium mb-1">{t.dashboard.empty}</p>
           <button
             onClick={() => navigate('/')}
-            className="mt-4 flex items-center gap-1.5 text-sm text-azure-500 hover:text-azure-700 font-medium transition-colors"
+            className="mt-4 flex items-center gap-1.5 text-sm text-azure-500 hover:text-azure-600 font-medium transition-colors"
           >
             {t.dashboard.goToNorms} <ArrowRight className="h-4 w-4" />
           </button>
@@ -88,7 +88,7 @@ export default function Dashboard() {
             <KpiCard
               label={t.dashboard.totalControls}
               value={stats.total}
-              icon={<ShieldCheck className="h-5 w-5 text-brand-300" aria-hidden="true" />}
+              icon={<ShieldCheck className="h-5 w-5 text-brand-400" aria-hidden="true" />}
               accent="border-l-brand-400"
             />
             <KpiCard
@@ -100,29 +100,28 @@ export default function Dashboard() {
             />
           </div>
 
-          <div className="bg-white dark:bg-brand-800 rounded-xl border border-brand-100 dark:border-brand-700 shadow-card overflow-hidden">
-            <div className="px-6 py-4 border-b border-brand-50 dark:border-brand-700">
-              <h2 className="font-semibold text-brand-500 dark:text-white tracking-tight">{t.dashboard.progress}</h2>
+          <div className="glass-card shadow-glass rounded-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-brand-200/40 dark:border-brand-700/40">
+              <h2 className="font-semibold text-brand-800 dark:text-brand-100 tracking-tight">{t.dashboard.progress}</h2>
             </div>
 
-            <div className="divide-y divide-brand-50 dark:divide-brand-700">
+            <div className="divide-y divide-brand-200/30 dark:divide-brand-700/40">
               {stats.normStats.map((norm) => {
                 const isOpen = expandedNorm === norm.id;
                 return (
                   <div key={norm.id}>
-                    {/* Row header — click to expand */}
                     <button
-                      className="w-full text-left px-6 py-4 hover:bg-brand-50 dark:hover:bg-brand-700/30 transition-colors"
+                      className="w-full text-left px-6 py-4 hover:bg-brand-100/30 dark:hover:bg-brand-700/20 transition-colors"
                       onClick={() => setExpandedNorm(isOpen ? null : norm.id)}
                       aria-expanded={isOpen}
                     >
                       <div className="flex items-center justify-between mb-2.5">
-                        <span className="text-sm font-semibold text-brand-500 dark:text-brand-100 flex items-center gap-2">
+                        <span className="text-sm font-semibold text-brand-700 dark:text-brand-100 flex items-center gap-2">
                           {norm.name}
                         </span>
-                        <div className="flex items-center gap-3 text-xs text-gray-400 dark:text-brand-400">
+                        <div className="flex items-center gap-3 text-xs text-brand-400 dark:text-brand-400">
                           <span>{t.dashboard.progressOf(norm.implemented, norm.total)}</span>
-                          <span className="font-bold text-brand-500 dark:text-white w-9 text-right tabular-nums">
+                          <span className="font-bold text-brand-700 dark:text-brand-100 w-9 text-right tabular-nums">
                             {norm.pct}%
                           </span>
                           {isOpen
@@ -130,28 +129,24 @@ export default function Dashboard() {
                             : <ChevronDown className="h-4 w-4 text-brand-300" />}
                         </div>
                       </div>
-                      {/* Simple progress bar (always visible) */}
-                      <div className="h-2 bg-brand-50 dark:bg-brand-700 rounded-full overflow-hidden">
+                      <div className="h-2 bg-brand-100/60 dark:bg-brand-700/50 rounded-full overflow-hidden">
                         <div
                           className="h-2 rounded-full transition-all duration-700"
                           style={{
                             width: `${norm.pct}%`,
-                            backgroundColor: norm.pct === 100 ? '#22c55e' : '#0085CA',
+                            backgroundColor: norm.pct === 100 ? '#22c55e' : '#c96338',
                           }}
                         />
                       </div>
                     </button>
 
-                    {/* Expanded drill-down */}
                     {isOpen && (
-                      <div className="px-6 pb-6 pt-2 bg-brand-50/60 dark:bg-brand-900/30 border-t border-brand-100 dark:border-brand-700">
+                      <div className="px-6 pb-6 pt-2 bg-brand-50/40 dark:bg-brand-900/20 border-t border-brand-200/30 dark:border-brand-700/30">
 
-                        {/* Stacked bar */}
                         <div className="mb-4">
                           <StackedBar statsByStatus={norm.statsByStatus} total={norm.total} />
                         </div>
 
-                        {/* Status chips */}
                         <div className="flex flex-wrap gap-2 mb-5">
                           {STATUS_ORDER.map((s) => {
                             const count = norm.statsByStatus[s];
@@ -171,26 +166,25 @@ export default function Dashboard() {
                           })}
                         </div>
 
-                        {/* Category breakdown */}
                         {norm.statsByCategory.length > 1 && (
                           <div className="mb-5">
-                            <p className="text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest mb-2">
+                            <p className="text-xs font-semibold text-brand-400 uppercase tracking-widest mb-2">
                               {t.controlList.columns.category}
                             </p>
                             <div className="space-y-2">
                               {norm.statsByCategory.map(({ cat, total, implemented, pct }) => (
                                 <div key={cat} className="flex items-center gap-3">
                                   <span className="text-xs text-brand-400 dark:text-brand-300 w-36 truncate flex-shrink-0" title={cat}>{cat}</span>
-                                  <div className="flex-1 h-1.5 bg-brand-100 dark:bg-brand-700 rounded-full overflow-hidden">
+                                  <div className="flex-1 h-1.5 bg-brand-100/60 dark:bg-brand-700/50 rounded-full overflow-hidden">
                                     <div
                                       className="h-1.5 rounded-full"
                                       style={{
                                         width: `${pct}%`,
-                                        backgroundColor: pct === 100 ? '#22c55e' : '#0085CA',
+                                        backgroundColor: pct === 100 ? '#22c55e' : '#c96338',
                                       }}
                                     />
                                   </div>
-                                  <span className="text-xs tabular-nums text-brand-400 dark:text-brand-400 w-20 text-right flex-shrink-0">
+                                  <span className="text-xs tabular-nums text-brand-400 w-20 text-right flex-shrink-0">
                                     {implemented}/{total} ({pct}%)
                                   </span>
                                 </div>
@@ -199,10 +193,9 @@ export default function Dashboard() {
                           </div>
                         )}
 
-                        {/* Navigate to framework */}
                         <button
                           onClick={(e) => { e.stopPropagation(); navigate(`/norms/${norm.id}`); }}
-                          className="flex items-center gap-1.5 text-xs font-semibold text-azure-500 hover:text-azure-700 transition-colors"
+                          className="flex items-center gap-1.5 text-xs font-semibold text-azure-500 hover:text-azure-600 transition-colors"
                         >
                           {t.normList.open} <ArrowRight className="h-3.5 w-3.5" />
                         </button>
@@ -222,7 +215,7 @@ export default function Dashboard() {
 function StackedBar({ statsByStatus, total }) {
   if (total === 0) return null;
   return (
-    <div className="h-3 flex rounded-full overflow-hidden gap-px bg-brand-100 dark:bg-brand-700">
+    <div className="h-3 flex rounded-full overflow-hidden gap-px bg-brand-100/60 dark:bg-brand-700/50">
       {STATUS_ORDER.map((s) => {
         const count = statsByStatus[s];
         if (count === 0) return null;
@@ -241,15 +234,15 @@ function StackedBar({ statsByStatus, total }) {
 
 function KpiCard({ label, value, sub, icon, accent }) {
   return (
-    <div className={`bg-white dark:bg-brand-800 rounded-xl border border-brand-100 dark:border-brand-700 shadow-card p-5 border-l-4 ${accent}`}>
+    <div className={`glass-card shadow-glass rounded-xl p-5 border-l-4 ${accent}`}>
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-semibold text-brand-300 dark:text-brand-400 uppercase tracking-widest">
+        <span className="text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest">
           {label}
         </span>
         {icon}
       </div>
-      <div className="text-3xl font-bold text-brand-500 dark:text-white tracking-tight">{value}</div>
-      {sub && <p className="text-xs text-gray-400 dark:text-brand-400 mt-1 font-normal">{sub}</p>}
+      <div className="text-3xl font-bold text-brand-800 dark:text-brand-100 tracking-tight">{value}</div>
+      {sub && <p className="text-xs text-brand-400 dark:text-brand-400 mt-1 font-normal">{sub}</p>}
     </div>
   );
 }

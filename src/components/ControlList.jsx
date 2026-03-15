@@ -166,7 +166,7 @@ export default function ControlList() {
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
         {/* Header */}
-        <div className="px-6 py-3.5 border-b border-brand-100 dark:border-brand-700 bg-white dark:bg-brand-800 flex items-center justify-between gap-4 flex-shrink-0">
+        <div className="px-6 py-3.5 border-b border-brand-200/40 dark:border-brand-700/40 glass-card flex items-center justify-between gap-4 flex-shrink-0">
           <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => navigate('/')}
@@ -176,13 +176,13 @@ export default function ControlList() {
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             </button>
             <div className="min-w-0">
-              <h1 className="font-semibold text-brand-500 dark:text-white truncate tracking-tight">{norm.name}</h1>
-              <p className="text-xs text-gray-400 dark:text-brand-400 font-normal">{controls.length} kontrol</p>
+              <h1 className="font-semibold text-brand-800 dark:text-brand-100 truncate tracking-tight">{norm.name}</h1>
+              <p className="text-xs text-brand-400 dark:text-brand-400 font-normal">{controls.length} kontrol</p>
             </div>
           </div>
           <button
             onClick={() => exportNormToCSV(controls, norm.name)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-brand-500 dark:text-brand-200 border border-brand-200 dark:border-brand-600 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-700 active:scale-95 transition-all duration-150 flex-shrink-0"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-brand-600 dark:text-brand-200 border border-brand-200/60 dark:border-brand-600/60 rounded-lg hover:bg-brand-50/70 dark:hover:bg-brand-700/50 active:scale-95 transition-all duration-150 flex-shrink-0 bg-white/50 dark:bg-brand-800/40 backdrop-blur-sm"
           >
             <Download className="h-4 w-4" aria-hidden="true" />
             {t.common.export}
@@ -190,7 +190,7 @@ export default function ControlList() {
         </div>
 
         {/* Filters */}
-        <div className="px-6 py-3 border-b border-brand-100 dark:border-brand-700 bg-brand-50 dark:bg-brand-900 flex items-center gap-2 flex-wrap flex-shrink-0">
+        <div className="px-6 py-3 border-b border-brand-200/30 dark:border-brand-700/30 bg-brand-50/60 dark:bg-brand-900/40 backdrop-blur-sm flex items-center gap-2 flex-wrap flex-shrink-0">
           <div className="relative">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-brand-300 pointer-events-none" aria-hidden="true" />
             <input
@@ -198,7 +198,7 @@ export default function ControlList() {
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t.controlList.searchPlaceholder}
               aria-label={t.controlList.searchAriaLabel}
-              className="pl-8 pr-7 py-1.5 text-xs border border-brand-200 dark:border-brand-600 rounded-lg bg-white dark:bg-brand-800 focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 w-48 text-brand-500 dark:text-brand-100 placeholder-brand-300 dark:placeholder-brand-500 transition-all"
+              className="pl-8 pr-7 py-1.5 text-xs border border-brand-200/60 dark:border-brand-600/60 rounded-lg bg-white/70 dark:bg-brand-800/60 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 w-48 text-brand-700 dark:text-brand-100 placeholder-brand-300 dark:placeholder-brand-500 transition-all"
             />
             {search && (
               <button
@@ -287,9 +287,9 @@ export default function ControlList() {
         {/* Table */}
         <div className="flex-1 overflow-auto">
           <table className="w-full text-sm border-collapse">
-            <thead className="sticky top-0 z-10 bg-brand-50 dark:bg-brand-900">
+            <thead className="sticky top-0 z-10 bg-brand-50/80 dark:bg-brand-900/80 backdrop-blur-sm">
               <tr>
-                <th className="px-4 py-3 w-10 border-b border-brand-100 dark:border-brand-700">
+                <th className="px-4 py-3 w-10 border-b border-brand-200/40 dark:border-brand-700/40">
                   <input
                     type="checkbox"
                     checked={allVisibleSelected}
@@ -303,7 +303,7 @@ export default function ControlList() {
                   <th
                     key={key}
                     onClick={() => handleSort(key)}
-                    className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest cursor-pointer select-none hover:bg-brand-100 dark:hover:bg-brand-800 border-b border-brand-100 dark:border-brand-700 transition-colors"
+                    className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest cursor-pointer select-none hover:bg-brand-100/50 dark:hover:bg-brand-800/50 border-b border-brand-200/40 dark:border-brand-700/40 transition-colors"
                   >
                     <div className="flex items-center gap-1">
                       {label}
@@ -311,12 +311,12 @@ export default function ControlList() {
                     </div>
                   </th>
                 ))}
-                <th className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest border-b border-brand-100 dark:border-brand-700">
+                <th className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest border-b border-brand-200/40 dark:border-brand-700/40">
                   {t.controlList.columns.documentation}
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-brand-50 dark:divide-brand-700 bg-white dark:bg-brand-800">
+            <tbody className="divide-y divide-brand-100/60 dark:divide-brand-700/40 bg-white/50 dark:bg-brand-800/40 backdrop-blur-sm">
               {filtered.map((c) => {
                 const active = selectedId === c.id;
                 const isChecked = selected.has(c.id);
@@ -326,10 +326,10 @@ export default function ControlList() {
                     onClick={() => setSelectedId(active ? null : c.id)}
                     className={`cursor-pointer transition-colors duration-100 ${
                       active
-                        ? 'bg-azure-50 dark:bg-azure-900/20 border-l-2 border-l-azure-500'
+                        ? 'bg-azure-50/70 dark:bg-azure-900/20 border-l-2 border-l-azure-500'
                         : isChecked
-                        ? 'bg-azure-50/50 dark:bg-azure-900/10'
-                        : 'hover:bg-brand-50 dark:hover:bg-brand-700'
+                        ? 'bg-azure-50/40 dark:bg-azure-900/10'
+                        : 'hover:bg-brand-50/60 dark:hover:bg-brand-700/40'
                     }`}
                   >
                     <td
@@ -347,10 +347,10 @@ export default function ControlList() {
                     <td className="px-4 py-3 font-mono text-xs text-brand-400 dark:text-brand-400 whitespace-nowrap w-28">
                       {c.controlId}
                     </td>
-                    <td className="px-4 py-3 text-brand-500 dark:text-brand-100 max-w-xs truncate font-medium">
+                    <td className="px-4 py-3 text-brand-700 dark:text-brand-100 max-w-xs truncate font-medium">
                       {c.name}
                     </td>
-                    <td className="px-4 py-3 text-xs text-gray-400 dark:text-brand-400 w-36">
+                    <td className="px-4 py-3 text-xs text-brand-400 dark:text-brand-400 w-36">
                       {c.category || <span className="text-brand-200 dark:text-brand-600">—</span>}
                     </td>
                     <td className="px-4 py-3 w-40">
@@ -366,7 +366,7 @@ export default function ControlList() {
                               <span
                                 key={doc.id}
                                 title={doc.name}
-                                className="inline-flex items-center gap-1 text-xs px-2 py-0.5 bg-brand-50 dark:bg-brand-700 text-brand-500 dark:text-brand-200 rounded-md border border-brand-100 dark:border-brand-600 font-medium max-w-[140px]"
+                                className="inline-flex items-center gap-1 text-xs px-2 py-0.5 bg-brand-50/80 dark:bg-brand-700/60 text-brand-600 dark:text-brand-200 rounded-md border border-brand-200/50 dark:border-brand-600/50 font-medium max-w-[140px]"
                               >
                                 <FileTypeIcon fileName={doc.fileName} className="h-3 w-3 flex-shrink-0 text-brand-400 dark:text-brand-400" />
                                 <span className="truncate">{doc.name}</span>

@@ -18,38 +18,89 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Warm parchment background with subtle gradient blobs */
+body {
+  background-color: #f5ede0;
+  background-image:
+    radial-gradient(ellipse at 15% 25%, rgba(201,99,56,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 10%, rgba(166,141,112,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 85%, rgba(201,99,56,0.07) 0%, transparent 55%);
+}
+
+.dark body {
+  background-color: #1e1610;
+  background-image:
+    radial-gradient(ellipse at 15% 25%, rgba(201,99,56,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 10%, rgba(124,101,84,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 85%, rgba(201,99,56,0.05) 0%, transparent 55%);
+}
+
 ::selection {
-  background: rgba(0, 133, 202, 0.18);
+  background: rgba(201,99,56,0.20);
   color: inherit;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #a1dded;
+  background: #c4ae93;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00607A;
+  background: #7c6554;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #004055;
+  background: #4a3a2e;
 }
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #5fc6e0;
+  background: #c4ae93;
 }
 
 /* Focus visible only for keyboard nav */
 :focus { outline: none; }
 :focus-visible {
-  outline: 2px solid #0085CA;
+  outline: 2px solid #c96338;
   outline-offset: 2px;
   border-radius: 6px;
+}
+
+/* Glass surface utilities */
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.68);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.62);
+  }
+  .dark .glass-card {
+    background: rgba(50, 38, 30, 0.60);
+    border: 1px solid rgba(74, 58, 46, 0.45);
+  }
+  .glass-modal {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+  }
+  .dark .glass-modal {
+    background: rgba(50, 38, 30, 0.80);
+    border: 1px solid rgba(74, 58, 46, 0.50);
+  }
+  .glass-sidebar {
+    background: rgba(50, 38, 30, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-right: 1px solid rgba(74, 58, 46, 0.50);
+  }
+  .dark .glass-sidebar {
+    background: rgba(30, 22, 16, 0.95);
+    border-right: 1px solid rgba(74, 58, 46, 0.40);
+  }
 }

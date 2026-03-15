@@ -90,20 +90,19 @@ export default function ImportModal({ onClose }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4"
-         style={{ backgroundColor: 'rgba(0,31,42,0.35)', backdropFilter: 'blur(4px)' }}>
-      <div className="bg-white dark:bg-brand-800 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col border border-brand-100 dark:border-brand-700"
-           style={{ boxShadow: '0 20px 60px 0 rgba(0,31,42,0.22)' }}>
+         style={{ backgroundColor: 'rgba(30,22,16,0.40)', backdropFilter: 'blur(6px)' }}>
+      <div className="glass-modal rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-modal">
 
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-brand-100 dark:border-brand-700">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-brand-200/40 dark:border-brand-700/40">
           <div>
-            <h2 className="text-base font-semibold text-brand-500 dark:text-white tracking-tight">
+            <h2 className="text-base font-semibold text-brand-800 dark:text-brand-100 tracking-tight">
               {STEP_LABELS[step]}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="text-brand-300 hover:text-brand-500 dark:hover:text-white transition-colors p-1.5 rounded-lg hover:bg-brand-50 dark:hover:bg-brand-700"
+            className="text-brand-400 hover:text-brand-700 dark:hover:text-brand-100 transition-colors p-1.5 rounded-lg hover:bg-brand-100/50 dark:hover:bg-brand-700/50"
             aria-label="Zavřít"
           >
             <X className="h-4 w-4" aria-hidden="true" />
@@ -124,7 +123,7 @@ export default function ImportModal({ onClose }) {
                   value={normName}
                   onChange={(e) => { setNormName(e.target.value); setError(''); setConflict(null); }}
                   placeholder="např. ISO 27001, SOC 2, NIST CSF"
-                  className="w-full border border-brand-200 dark:border-brand-600 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-brand-500 dark:text-brand-100 dark:bg-brand-700 placeholder-brand-200 dark:placeholder-brand-500 transition-all"
+                  className="w-full border border-brand-200/60 dark:border-brand-600/60 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-brand-700 dark:text-brand-100 bg-white/60 dark:bg-brand-700/50 backdrop-blur-sm placeholder-brand-300 dark:placeholder-brand-500 transition-all"
                 />
               </div>
 
@@ -137,7 +136,7 @@ export default function ImportModal({ onClose }) {
                   onChange={(e) => setNormDesc(e.target.value)}
                   rows={2}
                   placeholder="Stručný popis tohoto rámce shody"
-                  className="w-full border border-brand-200 dark:border-brand-600 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 resize-none text-brand-500 dark:text-brand-100 dark:bg-brand-700 placeholder-brand-200 dark:placeholder-brand-500 transition-all"
+                  className="w-full border border-brand-200/60 dark:border-brand-600/60 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 resize-none text-brand-700 dark:text-brand-100 bg-white/60 dark:bg-brand-700/50 backdrop-blur-sm placeholder-brand-300 dark:placeholder-brand-500 transition-all"
                 />
               </div>
 
@@ -149,8 +148,8 @@ export default function ImportModal({ onClose }) {
                   onClick={() => fileRef.current.click()}
                   className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all duration-150 ${
                     file
-                      ? 'border-azure-300 bg-azure-50 dark:bg-azure-900/20'
-                      : 'border-brand-200 dark:border-brand-600 hover:border-azure-400 hover:bg-brand-50 dark:hover:bg-brand-700'
+                      ? 'border-azure-300 bg-azure-50/60 dark:bg-azure-900/20'
+                      : 'border-brand-200/60 dark:border-brand-600/60 hover:border-azure-400 hover:bg-brand-50/50 dark:hover:bg-brand-700/40'
                   }`}
                   role="button"
                   tabIndex={0}
@@ -212,18 +211,18 @@ export default function ImportModal({ onClose }) {
                 {t.importModal.preview(parsed.data.length, Math.min(5, previewRows.length), normName)}
               </p>
 
-              <div className="overflow-x-auto border border-brand-100 dark:border-brand-700 rounded-xl">
+              <div className="overflow-x-auto border border-brand-200/40 dark:border-brand-700/40 rounded-xl bg-white/40 dark:bg-brand-800/30 backdrop-blur-sm">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="bg-brand-50 dark:bg-brand-900">
+                    <tr className="bg-brand-50/60 dark:bg-brand-900/40">
                       {cols.slice(0, 6).map((col) => (
-                        <th key={col} className="border-b border-brand-100 dark:border-brand-700 px-3 py-2.5 text-left font-semibold text-brand-400 dark:text-brand-300 uppercase tracking-widest">
+                        <th key={col} className="border-b border-brand-200/40 dark:border-brand-700/40 px-3 py-2.5 text-left font-semibold text-brand-400 uppercase tracking-widest">
                           {col}
                           {REQUIRED.includes(col) && <span className="text-red-400 ml-0.5">*</span>}
                         </th>
                       ))}
                       {cols.length > 6 && (
-                        <th className="border-b border-brand-100 dark:border-brand-700 px-3 py-2.5 text-brand-300 dark:text-brand-500">
+                        <th className="border-b border-brand-200/40 dark:border-brand-700/40 px-3 py-2.5 text-brand-300 dark:text-brand-500">
                           +{cols.length - 6} dalších
                         </th>
                       )}
@@ -231,13 +230,13 @@ export default function ImportModal({ onClose }) {
                   </thead>
                   <tbody>
                     {previewRows.map((row, i) => (
-                      <tr key={i} className="even:bg-brand-50/50 dark:even:bg-brand-700/30">
+                      <tr key={i} className="even:bg-brand-50/30 dark:even:bg-brand-700/20">
                         {cols.slice(0, 6).map((col) => (
-                          <td key={col} className="border-b border-brand-50 dark:border-brand-700 px-3 py-2.5 max-w-[12rem] truncate text-gray-600 dark:text-brand-300">
-                            {row[col] || <span className="text-brand-200 dark:text-brand-600">—</span>}
+                          <td key={col} className="border-b border-brand-100/50 dark:border-brand-700/30 px-3 py-2.5 max-w-[12rem] truncate text-brand-600 dark:text-brand-300">
+                            {row[col] || <span className="text-brand-300 dark:text-brand-600">—</span>}
                           </td>
                         ))}
-                        {cols.length > 6 && <td className="border-b border-brand-50 dark:border-brand-700 px-3 py-2.5" />}
+                        {cols.length > 6 && <td className="border-b border-brand-100/50 dark:border-brand-700/30 px-3 py-2.5" />}
                       </tr>
                     ))}
                   </tbody>
@@ -286,10 +285,10 @@ export default function ImportModal({ onClose }) {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-end gap-2.5 px-6 py-4 border-t border-brand-100 dark:border-brand-700">
+        <div className="flex justify-end gap-2.5 px-6 py-4 border-t border-brand-200/40 dark:border-brand-700/40">
           {step === 'form' && (
             <>
-              <button onClick={onClose} className="px-4 py-2 text-sm text-gray-400 dark:text-brand-400 hover:text-brand-500 dark:hover:text-white font-medium transition-colors">
+              <button onClick={onClose} className="px-4 py-2 text-sm text-brand-400 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-100 font-medium transition-colors">
                 {t.importModal.cancelBtn}
               </button>
               <button
@@ -303,7 +302,7 @@ export default function ImportModal({ onClose }) {
           )}
           {step === 'preview' && (
             <>
-              <button onClick={() => setStep('form')} className="px-4 py-2 text-sm text-gray-400 dark:text-brand-400 hover:text-brand-500 dark:hover:text-white font-medium transition-colors">
+              <button onClick={() => setStep('form')} className="px-4 py-2 text-sm text-brand-400 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-100 font-medium transition-colors">
                 {t.importModal.prevBtn}
               </button>
               <button
