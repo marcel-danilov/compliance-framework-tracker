@@ -100,16 +100,6 @@ export default function ImportModal({ onClose }) {
             <h2 className="text-base font-semibold text-brand-500 dark:text-white tracking-tight">
               {STEP_LABELS[step]}
             </h2>
-            <div className="flex items-center gap-1.5 mt-1">
-              {['form', 'preview', 'result'].map((s, i) => (
-                <div key={s} className="flex items-center gap-1.5">
-                  <div className={`w-1.5 h-1.5 rounded-full transition-all ${
-                    step === s ? 'bg-azure-500' : ['form','preview','result'].indexOf(step) > i ? 'bg-green-500' : 'bg-brand-200 dark:bg-brand-600'
-                  }`} />
-                  {i < 2 && <div className="w-4 h-px bg-brand-100 dark:bg-brand-700" />}
-                </div>
-              ))}
-            </div>
           </div>
           <button
             onClick={onClose}
