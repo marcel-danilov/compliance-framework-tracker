@@ -334,7 +334,7 @@ export default function ControlList() {
                   >
                     <td
                       className="px-4 py-3 w-10"
-                      onClick={(e) => { e.stopPropagation(); toggleSelect(c.id); }}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <input
                         type="checkbox"
