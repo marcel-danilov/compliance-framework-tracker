@@ -2,7 +2,7 @@ import { useTranslation } from '../lib/useTranslation';
 
 const BASE_CONFIG = {
   'Not Started':     { dot: 'bg-gray-400',  badge: 'bg-gray-100 text-gray-600 dark:bg-brand-700 dark:text-brand-300' },
-  'In Progress':     { dot: 'bg-azure-500', badge: 'bg-azure-50 text-azure-700 dark:bg-azure-900/30 dark:text-azure-300' },
+  'In Progress':     { dot: 'bg-blue-500',  badge: 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
   Implemented:       { dot: 'bg-green-500', badge: 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' },
   'Not Implemented': { dot: 'bg-red-500',   badge: 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400' },
   'N/A':             { dot: 'bg-amber-400', badge: 'bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400' },
