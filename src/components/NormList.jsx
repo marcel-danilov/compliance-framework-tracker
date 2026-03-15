@@ -106,7 +106,7 @@ export default function NormList() {
                 <div
                   className="h-1 w-full"
                   style={{
-                    backgroundColor: pct === 100 ? '#22c55e' : pct > 0 ? '#c96338' : '#c4ae93',
+                    backgroundColor: pct === 100 ? '#22c55e' : pct > 0 ? '#3b82f6' : '#c4ae93',
                   }}
                 />
 

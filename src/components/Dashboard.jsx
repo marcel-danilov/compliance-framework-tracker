@@ -134,7 +134,7 @@ export default function Dashboard() {
                           className="h-2 rounded-full transition-all duration-700"
                           style={{
                             width: `${norm.pct}%`,
-                            backgroundColor: norm.pct === 100 ? '#22c55e' : '#c96338',
+                            backgroundColor: norm.pct === 100 ? '#22c55e' : '#3b82f6',
                           }}
                         />
                       </div>
@@ -180,7 +180,7 @@ export default function Dashboard() {
                                       className="h-1.5 rounded-full"
                                       style={{
                                         width: `${pct}%`,
-                                        backgroundColor: pct === 100 ? '#22c55e' : '#c96338',
+                                        backgroundColor: pct === 100 ? '#22c55e' : '#3b82f6',
                                       }}
                                     />
                                   </div>
