@@ -7,11 +7,11 @@ import { ShieldCheck, CheckCircle2, BarChart3, ArrowRight, ChevronDown, ChevronU
 
 const STATUS_ORDER = ['Implemented', 'In Progress', 'N/A', 'Not Implemented', 'Not Started'];
 const STATUS_COLORS = {
-  Implemented:      { bg: '#22c55e', light: 'bg-green-100/80 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
-  'In Progress':    { bg: '#3b82f6', light: 'bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
-  'N/A':            { bg: '#f59e0b', light: 'bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' },
-  'Not Implemented':{ bg: '#ef4444', light: 'bg-red-100/80 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
-  'Not Started':    { bg: '#c4ae93', light: 'bg-brand-100/70 text-brand-500 dark:bg-brand-700/50 dark:text-brand-300' },
+  Implemented:       { bg: '#059669', light: 'bg-emerald-100/80 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400' },
+  'In Progress':     { bg: '#2563eb', light: 'bg-blue-100/80 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300' },
+  'N/A':             { bg: '#d97706', light: 'bg-amber-100/80 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400' },
+  'Not Implemented': { bg: '#e11d48', light: 'bg-rose-100/80 text-rose-700 dark:bg-rose-900/40 dark:text-rose-400' },
+  'Not Started':     { bg: '#a8a29e', light: 'bg-stone-100/80 text-stone-600 dark:bg-stone-800/50 dark:text-stone-300' },
 };
 
 export default function Dashboard() {
@@ -134,7 +134,7 @@ export default function Dashboard() {
                           className="h-2 rounded-full transition-all duration-700"
                           style={{
                             width: `${norm.pct}%`,
-                            backgroundColor: norm.pct === 100 ? '#22c55e' : '#3b82f6',
+                            backgroundColor: norm.pct === 100 ? '#059669' : '#2563eb',
                           }}
                         />
                       </div>
@@ -180,7 +180,7 @@ export default function Dashboard() {
                                       className="h-1.5 rounded-full"
                                       style={{
                                         width: `${pct}%`,
-                                        backgroundColor: pct === 100 ? '#22c55e' : '#3b82f6',
+                                        backgroundColor: pct === 100 ? '#059669' : '#2563eb',
                                       }}
                                     />
                                   </div>

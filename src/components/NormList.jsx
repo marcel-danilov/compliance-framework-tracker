@@ -106,7 +106,7 @@ export default function NormList() {
                 <div
                   className="h-1 w-full"
                   style={{
-                    backgroundColor: pct === 100 ? '#22c55e' : pct > 0 ? '#3b82f6' : '#c4ae93',
+                    backgroundColor: pct === 100 ? '#059669' : pct > 0 ? '#2563eb' : '#a8a29e',
                   }}
                 />
 
@@ -131,22 +131,22 @@ export default function NormList() {
                       </span>
                     )}
                     {s.inProgress > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-azure-100/70 dark:bg-azure-900/30 text-azure-700 dark:text-azure-300 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-blue-100/80 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-full font-medium">
                         {s.inProgress} {t.controlList.statusLabels['In Progress']}
                       </span>
                     )}
                     {s.implemented > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-green-50/80 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-emerald-100/80 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 rounded-full font-medium">
                         {s.implemented} {t.controlList.statusLabels['Implemented']}
                       </span>
                     )}
                     {s.notImplemented > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-red-50/80 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-rose-100/80 dark:bg-rose-900/40 text-rose-700 dark:text-rose-400 rounded-full font-medium">
                         {s.notImplemented} {t.controlList.statusLabels['Not Implemented']}
                       </span>
                     )}
                     {s.na > 0 && (
-                      <span className="text-xs px-2 py-0.5 bg-amber-50/80 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 rounded-full font-medium">
+                      <span className="text-xs px-2 py-0.5 bg-amber-100/80 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 rounded-full font-medium">
                         {s.na} {t.controlList.statusLabels['N/A']}
                       </span>
                     )}

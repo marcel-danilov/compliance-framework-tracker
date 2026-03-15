@@ -14,32 +14,32 @@ const STATUS_CONFIG = {
   'Not Started': {
     label:    'Nezahájeno',
     icon:     Circle,
-    inactive: 'border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:border-gray-300 hover:bg-gray-50 dark:hover:bg-brand-700',
-    active:   'border-gray-400 dark:border-gray-500 bg-gray-50 dark:bg-brand-700 text-gray-700 dark:text-gray-200 ring-2 ring-gray-300 dark:ring-gray-600',
+    inactive: 'border-stone-200 dark:border-stone-700 text-stone-500 dark:text-stone-400 hover:border-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800/40',
+    active:   'border-stone-400 dark:border-stone-500 bg-stone-100/80 dark:bg-stone-800/60 text-stone-700 dark:text-stone-200 ring-2 ring-stone-300 dark:ring-stone-600',
   },
   'In Progress': {
     label:    'Probíhá',
     icon:     Clock,
-    inactive: 'border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20',
-    active:   'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 ring-2 ring-blue-300 dark:ring-blue-700',
+    inactive: 'border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20',
+    active:   'border-blue-600 bg-blue-100/80 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 ring-2 ring-blue-400 dark:ring-blue-700',
   },
   Implemented: {
     label:    'Implementováno',
     icon:     CheckCircle2,
-    inactive: 'border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:border-green-300 hover:bg-green-50 dark:hover:bg-green-900/20',
-    active:   'border-green-500 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 ring-2 ring-green-300 dark:ring-green-800',
+    inactive: 'border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 hover:border-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20',
+    active:   'border-emerald-600 bg-emerald-100/80 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 ring-2 ring-emerald-400 dark:ring-emerald-800',
   },
   'Not Implemented': {
     label:    'Neimplementováno',
     icon:     XCircle,
-    inactive: 'border-red-200 dark:border-red-800 text-red-500 dark:text-red-400 hover:border-red-300 hover:bg-red-50 dark:hover:bg-red-900/20',
-    active:   'border-red-500 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 ring-2 ring-red-300 dark:ring-red-800',
+    inactive: 'border-rose-200 dark:border-rose-800 text-rose-500 dark:text-rose-400 hover:border-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20',
+    active:   'border-rose-600 bg-rose-100/80 dark:bg-rose-900/40 text-rose-700 dark:text-rose-400 ring-2 ring-rose-400 dark:ring-rose-800',
   },
   'N/A': {
     label:    'N/A',
     icon:     MinusCircle,
-    inactive: 'border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400 hover:border-amber-300 hover:bg-amber-50 dark:hover:bg-amber-900/20',
-    active:   'border-amber-500 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 ring-2 ring-amber-300 dark:ring-amber-800',
+    inactive: 'border-amber-200 dark:border-amber-800 text-amber-600 dark:text-amber-400 hover:border-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20',
+    active:   'border-amber-600 bg-amber-100/80 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 ring-2 ring-amber-400 dark:ring-amber-800',
   },
 };
 
