@@ -31,7 +31,7 @@ export default function Layout({ children }) {
                 <ShieldCheck className="h-4 w-4 text-white" aria-hidden="true" />
               </div>
               <span className="text-sm font-semibold text-brand-100 tracking-tight truncate block">
-                Compliance Mgr
+                MDA.ai
               </span>
             </div>
           )}
