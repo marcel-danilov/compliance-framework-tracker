@@ -224,6 +224,38 @@ export const cs = {
     },
   },
 
+  // Cross-norm Mappings
+  mappings: {
+    tab: 'Mapování',
+    controlsTab: 'Opatření',
+    title: 'Mapování opatření',
+    subtitle: 'Propojení opatření napříč normami',
+    addBtn: 'Přidat mapování',
+    empty: 'Žádná mapování',
+    emptyHelp: 'Propojte opatření z různých norem pomocí tlačítka výše.',
+    noOtherNorms: 'Pro vytvoření mapování importujte alespoň jednu další normu.',
+    deleteAriaLabel: 'Smazat mapování',
+    navigateAriaLabel: 'Přejít na toto opatření',
+    types: {
+      Equivalent: 'Ekvivalentní',
+      'Partially covers': 'Částečně pokrývá',
+      Related: 'Příbuzné',
+    },
+    form: {
+      title: 'Nové mapování',
+      controlA: 'Opatření z této normy',
+      normB: 'Cílová norma',
+      controlB: 'Opatření z cílové normy',
+      type: 'Typ vztahu',
+      selectControl: '— Vyberte opatření —',
+      selectNorm: '— Vyberte normu —',
+      saveBtn: 'Uložit',
+    },
+    linkedControls: 'Provázaná opatření',
+    noLinkedControls: 'Žádná provázaná opatření',
+    addMappingBtn: 'Přidat vazbu',
+  },
+
   // Confirm Dialog
   confirmDialog: {
     cancelBtn: 'Zrušit',

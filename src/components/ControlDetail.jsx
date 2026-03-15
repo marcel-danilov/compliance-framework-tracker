@@ -1,12 +1,20 @@
 import { useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useNavigate } from 'react-router-dom';
 import { db } from '../lib/db';
 import { useTranslation } from '../lib/useTranslation';
+import StatusBadge from './StatusBadge';
 import {
   X, Save, Check, Clock, CheckCircle2, XCircle, MinusCircle, Circle,
-  Download, Link2, Plus, Unlink,
+  Download, Link2, Plus, Unlink, ArrowRight,
 } from 'lucide-react';
 import FileTypeIcon from '../lib/FileTypeIcon';
+
+const TYPE_STYLES = {
+  Equivalent:         'bg-indigo-100/80 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300',
+  'Partially covers': 'bg-amber-100/80 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400',
+  Related:            'bg-stone-100/80 text-stone-600 dark:bg-stone-800/50 dark:text-stone-300',
+};
 
 const STATUSES = ['Not Started', 'In Progress', 'Implemented', 'Not Implemented', 'N/A'];
 
@@ -129,6 +137,7 @@ function DocumentPicker({ controlId, linkedIds, onClose }) {
 
 export default function ControlDetail({ control, onClose }) {
   const t = useTranslation();
+  const navigate = useNavigate();
   const [status, setStatus] = useState(control.status);
   const [notes, setNotes] = useState(control.notes || '');
   const [saved, setSaved] = useState(false);
@@ -143,6 +152,27 @@ export default function ControlDetail({ control, onClose }) {
     },
     [control.id]
   );
+
+  const linkedControls = useLiveQuery(async () => {
+    const [asA, asB] = await Promise.all([
+      db.controlMappings.where('controlIdA').equals(control.id).toArray(),
+      db.controlMappings.where('controlIdB').equals(control.id).toArray(),
+    ]);
+    const mappings = [...asA, ...asB];
+    if (mappings.length === 0) return [];
+    const otherIds = mappings.map((m) => m.controlIdA === control.id ? m.controlIdB : m.controlIdA);
+    const otherControls = await db.controls.where('id').anyOf(otherIds).toArray();
+    const normIds = [...new Set(otherControls.map((c) => c.normId))];
+    const norms = await db.norms.where('id').anyOf(normIds).toArray();
+    const ctrlMap = Object.fromEntries(otherControls.map((c) => [c.id, c]));
+    const normMap = Object.fromEntries(norms.map((n) => [n.id, n]));
+    return mappings.map((m) => {
+      const otherId = m.controlIdA === control.id ? m.controlIdB : m.controlIdA;
+      const otherCtrl = ctrlMap[otherId];
+      const otherNorm = otherCtrl ? normMap[otherCtrl.normId] : null;
+      return { mappingId: m.id, type: m.type, otherCtrl, otherNorm };
+    }).filter((item) => item.otherCtrl && item.otherNorm);
+  }, [control.id]);
 
   const persist = async (overrides = {}) => {
     const payload = { status, notes, ...overrides, updatedAt: new Date().toISOString() };
@@ -301,6 +331,56 @@ export default function ControlDetail({ control, onClose }) {
               >
                 {t.controlDetail.editDocuments}
               </button>
+            </div>
+          )}
+        </div>
+
+        {/* Linked Controls */}
+        <div>
+          <div className="flex items-center justify-between mb-2.5">
+            <p className="text-xs font-semibold text-brand-400 uppercase tracking-widest">
+              {t.mappings.linkedControls}
+            </p>
+            <button
+              onClick={() => navigate(`/norms/${control.normId}?tab=mappings&controlA=${control.id}`)}
+              className="flex items-center gap-1 text-xs text-azure-500 hover:text-azure-600 font-medium transition-colors"
+            >
+              <Plus className="h-3 w-3" aria-hidden="true" />
+              {t.mappings.addMappingBtn}
+            </button>
+          </div>
+
+          {!linkedControls || linkedControls.length === 0 ? (
+            <p className="text-xs text-brand-300 dark:text-brand-500 py-1">{t.mappings.noLinkedControls ?? '—'}</p>
+          ) : (
+            <div className="space-y-1.5">
+              {linkedControls.map((item) => (
+                <div
+                  key={item.mappingId}
+                  className="flex items-center gap-2 px-3 py-2 bg-brand-50/60 dark:bg-brand-700/50 rounded-xl group"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
+                      <span className="text-xs px-1.5 py-0.5 bg-brand-100/60 dark:bg-brand-700/60 text-brand-500 dark:text-brand-300 rounded border border-brand-200/50 dark:border-brand-600/50 font-medium max-w-[100px] truncate" title={item.otherNorm.name}>
+                        {item.otherNorm.name}
+                      </span>
+                      <code className="text-xs font-mono text-brand-500 dark:text-brand-300">{item.otherCtrl.controlId}</code>
+                      <span className={`text-xs px-1.5 py-0.5 rounded-full font-medium ${TYPE_STYLES[item.type]}`}>
+                        {t.mappings.types[item.type]}
+                      </span>
+                    </div>
+                    <p className="text-xs text-brand-600 dark:text-brand-300 truncate">{item.otherCtrl.name}</p>
+                  </div>
+                  <StatusBadge status={item.otherCtrl.status} />
+                  <button
+                    onClick={() => navigate(`/norms/${item.otherCtrl.normId}?select=${item.otherCtrl.id}`)}
+                    className="p-1 text-brand-300 hover:text-azure-500 rounded transition-colors opacity-0 group-hover:opacity-100 flex-shrink-0"
+                    title={t.mappings.navigateAriaLabel}
+                  >
+                    <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                  </button>
+                </div>
+              ))}
             </div>
           )}
         </div>

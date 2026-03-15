@@ -36,3 +36,12 @@ db.version(3).stores({
     await trans.table('documents').update(doc.id, { currentVersion: 1 });
   }
 });
+
+db.version(4).stores({
+  norms: '++id, name, createdAt, updatedAt',
+  controls: '++id, normId, controlId, status, owner, dueDate, updatedAt',
+  documents: '++id, name, fileName, fileType, uploadedAt',
+  controlDocuments: '++id, controlId, documentId',
+  documentVersions: '++id, documentId, versionNumber, uploadedAt',
+  controlMappings: '++id, controlIdA, controlIdB, createdAt',
+});

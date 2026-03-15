@@ -1,10 +1,11 @@
-import { useState, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useMemo, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../lib/db';
 import { exportNormToCSV } from '../lib/csvUtils';
 import ControlDetail from './ControlDetail';
 import StatusBadge from './StatusBadge';
+import MappingEditor from './MappingEditor';
 import { useTranslation } from '../lib/useTranslation';
 import FileTypeIcon from '../lib/FileTypeIcon';
 import {
@@ -22,8 +23,19 @@ const STATUSES = ['Not Started', 'In Progress', 'Implemented', 'Not Implemented'
 export default function ControlList() {
   const { normId } = useParams();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const t = useTranslation();
   const nId = parseInt(normId, 10);
+
+  const activeTab = searchParams.get('tab') === 'mappings' ? 'mappings' : 'controls';
+  const preselectControlA = searchParams.get('controlA') ? parseInt(searchParams.get('controlA'), 10) : null;
+
+  const setTab = (tab) => {
+    const next = new URLSearchParams(searchParams);
+    if (tab === 'controls') { next.delete('tab'); next.delete('controlA'); }
+    else next.set('tab', tab);
+    setSearchParams(next, { replace: true });
+  };
 
   const COLS = [
     { key: 'controlId', label: t.controlList.columns.id },
@@ -45,6 +57,15 @@ export default function ControlList() {
     () => db.controls.where('normId').equals(nId).toArray(),
     [nId]
   );
+
+  // Auto-select a control when navigated with ?select=<id>
+  const preselectId = searchParams.get('select') ? parseInt(searchParams.get('select'), 10) : null;
+  useEffect(() => {
+    if (preselectId && controls) {
+      const ctrl = controls.find((c) => c.id === preselectId);
+      if (ctrl) setSelectedId(ctrl.id);
+    }
+  }, [preselectId, controls]);
   const allLinks = useLiveQuery(() => db.controlDocuments.toArray(), []);
   const allDocs  = useLiveQuery(() => db.documents.toArray(), []);
 
@@ -176,212 +197,235 @@ export default function ControlList() {
           </button>
         </div>
 
-        {/* Filters */}
-        <div className="px-6 py-3 border-b border-brand-200/30 dark:border-brand-700/30 bg-brand-50/60 dark:bg-brand-900/40 backdrop-blur-sm flex items-center gap-2 flex-wrap flex-shrink-0">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-brand-300 pointer-events-none" aria-hidden="true" />
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={t.controlList.searchPlaceholder}
-              aria-label={t.controlList.searchAriaLabel}
-              className="pl-8 pr-7 py-1.5 text-xs border border-brand-200/60 dark:border-brand-600/60 rounded-lg bg-white/70 dark:bg-brand-800/60 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 w-48 text-brand-700 dark:text-brand-100 placeholder-brand-300 dark:placeholder-brand-500 transition-all"
-            />
-            {search && (
-              <button
-                onClick={() => setSearch('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2"
-                aria-label={t.controlList.clearSearch}
-              >
-                <X className="h-3 w-3 text-brand-300 hover:text-brand-500" />
-              </button>
-            )}
-          </div>
-
-          <div className="flex gap-1 flex-wrap">
-            {STATUSES.map((s) => (
-              <button
-                key={s}
-                onClick={() => toggleStatus(s)}
-                aria-pressed={statusFilter.includes(s)}
-                className={`text-xs px-2.5 py-1 rounded-full border font-medium transition-all duration-150 ${
-                  statusFilter.includes(s)
-                    ? 'bg-azure-500 text-white border-azure-500 shadow-sm'
-                    : 'border-brand-200 dark:border-brand-600 text-brand-400 dark:text-brand-300 hover:border-brand-400 bg-white dark:bg-brand-800 hover:text-brand-600 dark:hover:text-white'
-                }`}
-              >
-                {t.controlList.statusLabels[s]}
-              </button>
-            ))}
-          </div>
-
-          {categories.length > 0 && (
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              aria-label={t.controlList.categoryAriaLabel}
-              className="text-xs border border-brand-200 dark:border-brand-600 rounded-lg px-2 py-1.5 bg-white dark:bg-brand-800 dark:text-brand-100 focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-brand-500 transition-all"
-            >
-              <option value="">{t.controlList.allCategories}</option>
-              {categories.map((c) => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-          )}
-
-          {hasFilters && (
+        {/* Tabs */}
+        <div className="px-6 border-b border-brand-200/40 dark:border-brand-700/40 bg-brand-50/40 dark:bg-brand-900/30 backdrop-blur-sm flex items-center gap-0 flex-shrink-0">
+          {[
+            { key: 'controls', label: t.mappings.controlsTab },
+            { key: 'mappings', label: t.mappings.tab },
+          ].map(({ key, label }) => (
             <button
-              onClick={clearFilters}
-              className="text-xs text-azure-500 hover:text-azure-700 font-medium hover:underline transition-colors"
+              key={key}
+              onClick={() => setTab(key)}
+              className={`px-4 py-2.5 text-xs font-semibold border-b-2 transition-colors ${
+                activeTab === key
+                  ? 'border-azure-500 text-azure-600 dark:text-azure-400'
+                  : 'border-transparent text-brand-400 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-100'
+              }`}
             >
-              {t.controlList.clearFilters}
+              {label}
             </button>
-          )}
-
-          <span className="ml-auto text-xs text-brand-300 dark:text-brand-500 font-normal tabular-nums">
-            {filtered.length} / {controls.length}
-          </span>
+          ))}
         </div>
 
-        {/* Bulk action bar */}
-        {selected.size > 0 && (
-          <div className="px-6 py-2.5 border-b border-azure-200 dark:border-azure-800 bg-azure-50 dark:bg-azure-900/20 flex items-center gap-3 flex-wrap flex-shrink-0">
-            <span className="text-xs font-semibold text-azure-700 dark:text-azure-300">
-              {t.bulkEdit.selected(selected.size)}
-            </span>
-            <span className="text-xs text-azure-500 dark:text-azure-400">{t.bulkEdit.changeStatus}:</span>
+        {/* Mappings tab */}
+        {activeTab === 'mappings' && (
+          <MappingEditor normId={nId} controls={controls} preselectControlA={preselectControlA} />
+        )}
+
+        {/* Controls tab: filters + bulk bar + table */}
+        {activeTab === 'controls' && <>
+          <div className="px-6 py-3 border-b border-brand-200/30 dark:border-brand-700/30 bg-brand-50/60 dark:bg-brand-900/40 backdrop-blur-sm flex items-center gap-2 flex-wrap flex-shrink-0">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-brand-300 pointer-events-none" aria-hidden="true" />
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={t.controlList.searchPlaceholder}
+                aria-label={t.controlList.searchAriaLabel}
+                className="pl-8 pr-7 py-1.5 text-xs border border-brand-200/60 dark:border-brand-600/60 rounded-lg bg-white/70 dark:bg-brand-800/60 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 w-48 text-brand-700 dark:text-brand-100 placeholder-brand-300 dark:placeholder-brand-500 transition-all"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2"
+                  aria-label={t.controlList.clearSearch}
+                >
+                  <X className="h-3 w-3 text-brand-300 hover:text-brand-500" />
+                </button>
+              )}
+            </div>
+
             <div className="flex gap-1 flex-wrap">
               {STATUSES.map((s) => (
                 <button
                   key={s}
-                  onClick={() => bulkUpdateStatus(s)}
-                  className="text-xs px-2.5 py-1 rounded-full border border-azure-300 dark:border-azure-700 text-azure-700 dark:text-azure-300 hover:bg-azure-500 hover:text-white hover:border-azure-500 font-medium transition-all duration-150"
+                  onClick={() => toggleStatus(s)}
+                  aria-pressed={statusFilter.includes(s)}
+                  className={`text-xs px-2.5 py-1 rounded-full border font-medium transition-all duration-150 ${
+                    statusFilter.includes(s)
+                      ? 'bg-azure-500 text-white border-azure-500 shadow-sm'
+                      : 'border-brand-200 dark:border-brand-600 text-brand-400 dark:text-brand-300 hover:border-brand-400 bg-white dark:bg-brand-800 hover:text-brand-600 dark:hover:text-white'
+                  }`}
                 >
                   {t.controlList.statusLabels[s]}
                 </button>
               ))}
             </div>
-            <button
-              onClick={clearSelection}
-              className="ml-auto text-xs text-azure-500 hover:text-azure-700 dark:hover:text-azure-300 font-medium flex items-center gap-1 transition-colors"
-            >
-              <X className="h-3 w-3" />
-              {t.bulkEdit.clearSelection}
-            </button>
-          </div>
-        )}
 
-        {/* Table */}
-        <div className="flex-1 overflow-auto">
-          <table className="w-full text-sm border-collapse">
-            <thead className="sticky top-0 z-10 bg-brand-50/80 dark:bg-brand-900/80 backdrop-blur-sm">
-              <tr>
-                <th className="px-4 py-3 w-10 border-b border-brand-200/40 dark:border-brand-700/40">
-                  <input
-                    type="checkbox"
-                    checked={allVisibleSelected}
-                    ref={(el) => { if (el) el.indeterminate = someSelected && !allVisibleSelected; }}
-                    onChange={toggleAll}
-                    aria-label="Vybrat vše"
-                    className="h-3.5 w-3.5 rounded border-brand-300 dark:border-brand-600 text-azure-500 focus:ring-azure-400/50 cursor-pointer"
-                  />
-                </th>
-                {COLS.map(({ key, label }) => (
-                  <th
-                    key={key}
-                    onClick={() => handleSort(key)}
-                    className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest cursor-pointer select-none hover:bg-brand-100/50 dark:hover:bg-brand-800/50 border-b border-brand-200/40 dark:border-brand-700/40 transition-colors"
-                  >
-                    <div className="flex items-center gap-1">
-                      {label}
-                      <SortIcon k={key} />
-                    </div>
-                  </th>
+            {categories.length > 0 && (
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                aria-label={t.controlList.categoryAriaLabel}
+                className="text-xs border border-brand-200 dark:border-brand-600 rounded-lg px-2 py-1.5 bg-white dark:bg-brand-800 dark:text-brand-100 focus:outline-none focus:ring-2 focus:ring-azure-400/50 focus:border-azure-400 text-brand-500 transition-all"
+              >
+                <option value="">{t.controlList.allCategories}</option>
+                {categories.map((c) => (
+                  <option key={c} value={c}>{c}</option>
                 ))}
-                <th className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest border-b border-brand-200/40 dark:border-brand-700/40">
-                  {t.controlList.columns.documentation}
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-brand-100/60 dark:divide-brand-700/40 bg-white/50 dark:bg-brand-800/40 backdrop-blur-sm">
-              {filtered.map((c) => {
-                const active = selectedId === c.id;
-                const isChecked = selected.has(c.id);
-                return (
-                  <tr
-                    key={c.id}
-                    onClick={() => setSelectedId(active ? null : c.id)}
-                    className={`cursor-pointer transition-colors duration-100 ${
-                      active
-                        ? 'bg-azure-50/70 dark:bg-azure-900/20 border-l-2 border-l-azure-500'
-                        : isChecked
-                        ? 'bg-azure-50/40 dark:bg-azure-900/10'
-                        : 'hover:bg-brand-50/60 dark:hover:bg-brand-700/40'
-                    }`}
+              </select>
+            )}
+
+            {hasFilters && (
+              <button
+                onClick={clearFilters}
+                className="text-xs text-azure-500 hover:text-azure-700 font-medium hover:underline transition-colors"
+              >
+                {t.controlList.clearFilters}
+              </button>
+            )}
+
+            <span className="ml-auto text-xs text-brand-300 dark:text-brand-500 font-normal tabular-nums">
+              {filtered.length} / {controls.length}
+            </span>
+          </div>
+
+          {selected.size > 0 && (
+            <div className="px-6 py-2.5 border-b border-azure-200 dark:border-azure-800 bg-azure-50 dark:bg-azure-900/20 flex items-center gap-3 flex-wrap flex-shrink-0">
+              <span className="text-xs font-semibold text-azure-700 dark:text-azure-300">
+                {t.bulkEdit.selected(selected.size)}
+              </span>
+              <span className="text-xs text-azure-500 dark:text-azure-400">{t.bulkEdit.changeStatus}:</span>
+              <div className="flex gap-1 flex-wrap">
+                {STATUSES.map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => bulkUpdateStatus(s)}
+                    className="text-xs px-2.5 py-1 rounded-full border border-azure-300 dark:border-azure-700 text-azure-700 dark:text-azure-300 hover:bg-azure-500 hover:text-white hover:border-azure-500 font-medium transition-all duration-150"
                   >
-                    <td
-                      className="px-4 py-3 w-10"
-                      onClick={(e) => e.stopPropagation()}
+                    {t.controlList.statusLabels[s]}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={clearSelection}
+                className="ml-auto text-xs text-azure-500 hover:text-azure-700 dark:hover:text-azure-300 font-medium flex items-center gap-1 transition-colors"
+              >
+                <X className="h-3 w-3" />
+                {t.bulkEdit.clearSelection}
+              </button>
+            </div>
+          )}
+
+          <div className="flex-1 overflow-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead className="sticky top-0 z-10 bg-brand-50/80 dark:bg-brand-900/80 backdrop-blur-sm">
+                <tr>
+                  <th className="px-4 py-3 w-10 border-b border-brand-200/40 dark:border-brand-700/40">
+                    <input
+                      type="checkbox"
+                      checked={allVisibleSelected}
+                      ref={(el) => { if (el) el.indeterminate = someSelected && !allVisibleSelected; }}
+                      onChange={toggleAll}
+                      aria-label="Vybrat vše"
+                      className="h-3.5 w-3.5 rounded border-brand-300 dark:border-brand-600 text-azure-500 focus:ring-azure-400/50 cursor-pointer"
+                    />
+                  </th>
+                  {COLS.map(({ key, label }) => (
+                    <th
+                      key={key}
+                      onClick={() => handleSort(key)}
+                      className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest cursor-pointer select-none hover:bg-brand-100/50 dark:hover:bg-brand-800/50 border-b border-brand-200/40 dark:border-brand-700/40 transition-colors"
                     >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={() => toggleSelect(c.id)}
-                        aria-label={`Vybrat ${c.controlId}`}
-                        className="h-3.5 w-3.5 rounded border-brand-300 dark:border-brand-600 text-azure-500 focus:ring-azure-400/50 cursor-pointer"
-                      />
-                    </td>
-                    <td className="px-4 py-3 font-mono text-xs text-brand-400 dark:text-brand-400 whitespace-nowrap w-28">
-                      {c.controlId}
-                    </td>
-                    <td className="px-4 py-3 text-brand-700 dark:text-brand-100 max-w-xs truncate font-medium">
-                      {c.name}
-                    </td>
-                    <td className="px-4 py-3 text-xs text-brand-400 dark:text-brand-400 w-36">
-                      {c.category || <span className="text-brand-200 dark:text-brand-600">—</span>}
-                    </td>
-                    <td className="px-4 py-3 w-40">
-                      <StatusBadge status={c.status} />
-                    </td>
-                    <td className="px-4 py-3">
-                      {(() => {
-                        const docs = docMap[c.id] || [];
-                        if (docs.length === 0) return <span className="text-brand-200 dark:text-brand-600 text-xs">—</span>;
-                        return (
-                          <div className="flex items-center gap-1 flex-wrap">
-                            {docs.slice(0, 2).map((doc) => (
-                              <span
-                                key={doc.id}
-                                title={doc.name}
-                                className="inline-flex items-center gap-1 text-xs px-2 py-0.5 bg-brand-50/80 dark:bg-brand-700/60 text-brand-600 dark:text-brand-200 rounded-md border border-brand-200/50 dark:border-brand-600/50 font-medium max-w-[140px]"
-                              >
-                                <FileTypeIcon fileName={doc.fileName} className="h-3 w-3 flex-shrink-0 text-brand-400 dark:text-brand-400" />
-                                <span className="truncate">{doc.name}</span>
-                              </span>
-                            ))}
-                            {docs.length > 2 && (
-                              <span className="text-xs text-brand-300 dark:text-brand-500 font-medium">+{docs.length - 2}</span>
-                            )}
-                          </div>
-                        );
-                      })()}
+                      <div className="flex items-center gap-1">
+                        {label}
+                        <SortIcon k={key} />
+                      </div>
+                    </th>
+                  ))}
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest border-b border-brand-200/40 dark:border-brand-700/40">
+                    {t.controlList.columns.documentation}
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-brand-100/60 dark:divide-brand-700/40 bg-white/50 dark:bg-brand-800/40 backdrop-blur-sm">
+                {filtered.map((c) => {
+                  const active = selectedId === c.id;
+                  const isChecked = selected.has(c.id);
+                  return (
+                    <tr
+                      key={c.id}
+                      onClick={() => setSelectedId(active ? null : c.id)}
+                      className={`cursor-pointer transition-colors duration-100 ${
+                        active
+                          ? 'bg-azure-50/70 dark:bg-azure-900/20 border-l-2 border-l-azure-500'
+                          : isChecked
+                          ? 'bg-azure-50/40 dark:bg-azure-900/10'
+                          : 'hover:bg-brand-50/60 dark:hover:bg-brand-700/40'
+                      }`}
+                    >
+                      <td className="px-4 py-3 w-10" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => toggleSelect(c.id)}
+                          aria-label={`Vybrat ${c.controlId}`}
+                          className="h-3.5 w-3.5 rounded border-brand-300 dark:border-brand-600 text-azure-500 focus:ring-azure-400/50 cursor-pointer"
+                        />
+                      </td>
+                      <td className="px-4 py-3 font-mono text-xs text-brand-400 dark:text-brand-400 whitespace-nowrap w-28">
+                        {c.controlId}
+                      </td>
+                      <td className="px-4 py-3 text-brand-700 dark:text-brand-100 max-w-xs truncate font-medium">
+                        {c.name}
+                      </td>
+                      <td className="px-4 py-3 text-xs text-brand-400 dark:text-brand-400 w-36">
+                        {c.category || <span className="text-brand-200 dark:text-brand-600">—</span>}
+                      </td>
+                      <td className="px-4 py-3 w-40">
+                        <StatusBadge status={c.status} />
+                      </td>
+                      <td className="px-4 py-3">
+                        {(() => {
+                          const docs = docMap[c.id] || [];
+                          if (docs.length === 0) return <span className="text-brand-200 dark:text-brand-600 text-xs">—</span>;
+                          return (
+                            <div className="flex items-center gap-1 flex-wrap">
+                              {docs.slice(0, 2).map((doc) => (
+                                <span
+                                  key={doc.id}
+                                  title={doc.name}
+                                  className="inline-flex items-center gap-1 text-xs px-2 py-0.5 bg-brand-50/80 dark:bg-brand-700/60 text-brand-600 dark:text-brand-200 rounded-md border border-brand-200/50 dark:border-brand-600/50 font-medium max-w-[140px]"
+                                >
+                                  <FileTypeIcon fileName={doc.fileName} className="h-3 w-3 flex-shrink-0 text-brand-400 dark:text-brand-400" />
+                                  <span className="truncate">{doc.name}</span>
+                                </span>
+                              ))}
+                              {docs.length > 2 && (
+                                <span className="text-xs text-brand-300 dark:text-brand-500 font-medium">+{docs.length - 2}</span>
+                              )}
+                            </div>
+                          );
+                        })()}
+                      </td>
+                    </tr>
+                  );
+                })}
+                {filtered.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="px-4 py-20 text-center">
+                      <p className="text-brand-300 text-sm">{t.controlList.noResults}</p>
                     </td>
                   </tr>
-                );
-              })}
-              {filtered.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-4 py-20 text-center">
-                    <p className="text-brand-300 text-sm">{t.controlList.noResults}</p>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>}
+
       </div>
 
-      {selectedControl && (
+      {activeTab === 'controls' && selectedControl && (
         <ControlDetail
           key={selectedControl.id}
           control={selectedControl}
