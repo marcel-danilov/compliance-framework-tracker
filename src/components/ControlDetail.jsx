@@ -20,8 +20,8 @@ const STATUS_CONFIG = {
   'In Progress': {
     label:    'Probíhá',
     icon:     Clock,
-    inactive: 'border-azure-200 dark:border-azure-800 text-azure-600 dark:text-azure-400 hover:border-azure-300 hover:bg-azure-50 dark:hover:bg-azure-900/20',
-    active:   'border-azure-500 bg-azure-50 dark:bg-azure-900/30 text-azure-700 dark:text-azure-300 ring-2 ring-azure-300 dark:ring-azure-700',
+    inactive: 'border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:border-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20',
+    active:   'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 ring-2 ring-blue-300 dark:ring-blue-700',
   },
   Implemented: {
     label:    'Implementováno',

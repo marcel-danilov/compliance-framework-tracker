@@ -8,7 +8,7 @@ import { ShieldCheck, CheckCircle2, BarChart3, ArrowRight, ChevronDown, ChevronU
 const STATUS_ORDER = ['Implemented', 'In Progress', 'N/A', 'Not Implemented', 'Not Started'];
 const STATUS_COLORS = {
   Implemented:      { bg: '#22c55e', light: 'bg-green-100/80 text-green-700 dark:bg-green-900/30 dark:text-green-400' },
-  'In Progress':    { bg: '#c96338', light: 'bg-azure-100/80 text-azure-700 dark:bg-azure-900/30 dark:text-azure-300' },
+  'In Progress':    { bg: '#3b82f6', light: 'bg-blue-100/80 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
   'N/A':            { bg: '#f59e0b', light: 'bg-amber-100/80 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' },
   'Not Implemented':{ bg: '#ef4444', light: 'bg-red-100/80 text-red-700 dark:bg-red-900/30 dark:text-red-400' },
   'Not Started':    { bg: '#c4ae93', light: 'bg-brand-100/70 text-brand-500 dark:bg-brand-700/50 dark:text-brand-300' },

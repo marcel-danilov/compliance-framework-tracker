@@ -204,7 +204,7 @@ export default function NormList() {
 
 const SEGMENTS = [
   { key: 'implemented',    color: '#22c55e' },
-  { key: 'inProgress',     color: '#c96338' },
+  { key: 'inProgress',     color: '#3b82f6' },
   { key: 'na',             color: '#f59e0b' },
   { key: 'notImplemented', color: '#ef4444' },
   { key: 'notStarted',     color: '#c4ae93' },
