@@ -343,6 +343,9 @@ export default function ControlList() {
                       </div>
                     </th>
                   ))}
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest border-b border-brand-200/40 dark:border-brand-700/40 w-20">
+                    {t.controlList.columns.cia}
+                  </th>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-brand-400 dark:text-brand-400 uppercase tracking-widest border-b border-brand-200/40 dark:border-brand-700/40">
                     {t.controlList.columns.documentation}
                   </th>
@@ -385,6 +388,17 @@ export default function ControlList() {
                       <td className="px-4 py-3 w-40">
                         <StatusBadge status={c.status} />
                       </td>
+                      <td className="px-4 py-3 w-20">
+                        {(c.ciaC || c.ciaI || c.ciaA) ? (
+                          <div className="flex gap-1">
+                            {c.ciaC && <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-300">C</span>}
+                            {c.ciaI && <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-sky-100 dark:bg-sky-900/40 text-sky-600 dark:text-sky-300">I</span>}
+                            {c.ciaA && <span className="text-xs font-bold px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-300">A</span>}
+                          </div>
+                        ) : (
+                          <span className="text-brand-200 dark:text-brand-600 text-xs">—</span>
+                        )}
+                      </td>
                       <td className="px-4 py-3">
                         {(() => {
                           const docs = docMap[c.id] || [];
@@ -413,7 +427,7 @@ export default function ControlList() {
                 })}
                 {filtered.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="px-4 py-20 text-center">
+                    <td colSpan={7} className="px-4 py-20 text-center">
                       <p className="text-brand-300 text-sm">{t.controlList.noResults}</p>
                     </td>
                   </tr>

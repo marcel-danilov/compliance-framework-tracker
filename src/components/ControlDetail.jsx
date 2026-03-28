@@ -140,6 +140,9 @@ export default function ControlDetail({ control, onClose }) {
   const navigate = useNavigate();
   const [status, setStatus] = useState(control.status);
   const [notes, setNotes] = useState(control.notes || '');
+  const [ciaC, setCiaC] = useState(control.ciaC ?? false);
+  const [ciaI, setCiaI] = useState(control.ciaI ?? false);
+  const [ciaA, setCiaA] = useState(control.ciaA ?? false);
   const [saved, setSaved] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
 
@@ -175,7 +178,7 @@ export default function ControlDetail({ control, onClose }) {
   }, [control.id]);
 
   const persist = async (overrides = {}) => {
-    const payload = { status, notes, ...overrides, updatedAt: new Date().toISOString() };
+    const payload = { status, notes, ciaC, ciaI, ciaA, ...overrides, updatedAt: new Date().toISOString() };
     await db.controls.update(control.id, payload);
     await db.norms.update(control.normId, { updatedAt: new Date().toISOString() });
     setSaved(true);
@@ -265,6 +268,36 @@ export default function ControlDetail({ control, onClose }) {
                 </button>
               );
             })}
+          </div>
+        </div>
+
+        {/* CIA Triad */}
+        <div>
+          <p className="text-xs font-semibold text-brand-400 uppercase tracking-widest mb-2.5">
+            {t.controlDetail.ciaTriad}
+          </p>
+          <div className="flex gap-2">
+            {[
+              { letter: 'C', label: t.controlDetail.ciaC, val: ciaC, set: setCiaC, field: 'ciaC',
+                inactive: 'border-violet-200 dark:border-violet-800 text-violet-400 dark:text-violet-500 hover:border-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20',
+                active: 'border-violet-500 bg-violet-100/80 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 ring-2 ring-violet-300 dark:ring-violet-700' },
+              { letter: 'I', label: t.controlDetail.ciaI, val: ciaI, set: setCiaI, field: 'ciaI',
+                inactive: 'border-sky-200 dark:border-sky-800 text-sky-400 dark:text-sky-500 hover:border-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/20',
+                active: 'border-sky-500 bg-sky-100/80 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300 ring-2 ring-sky-300 dark:ring-sky-700' },
+              { letter: 'A', label: t.controlDetail.ciaA, val: ciaA, set: setCiaA, field: 'ciaA',
+                inactive: 'border-amber-200 dark:border-amber-800 text-amber-400 dark:text-amber-500 hover:border-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20',
+                active: 'border-amber-500 bg-amber-100/80 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 ring-2 ring-amber-300 dark:ring-amber-700' },
+            ].map(({ letter, label, val, set, field, inactive, active }) => (
+              <button
+                key={field}
+                onClick={() => { const next = !val; set(next); persist({ [field]: next }); }}
+                className={`flex-1 text-xs py-2.5 rounded-lg border-2 font-semibold transition-all duration-150 flex flex-col items-center gap-0.5 ${val ? active : inactive}`}
+                aria-pressed={val}
+              >
+                <span className="text-sm font-bold">{letter}</span>
+                <span className="text-[10px] font-medium">{label}</span>
+              </button>
+            ))}
           </div>
         </div>
 

@@ -58,6 +58,7 @@ export const cs = {
       category: 'Kategorie',
       status: 'Stav',
       documentation: 'Dokumentace',
+      cia: 'CIA',
     },
     // Status labels
     statusLabels: {
@@ -73,6 +74,10 @@ export const cs = {
   controlDetail: {
     description: 'Popis',
     status: 'Stav',
+    ciaTriad: 'CIA Triáda',
+    ciaC: 'Důvěrnost',
+    ciaI: 'Integrita',
+    ciaA: 'Dostupnost',
     notes: 'Poznámky',
     notesPlaceholder: 'Poznámky k implementaci, odkazy na důkazy, kontext…',
     documentation: 'Dokumentace',
